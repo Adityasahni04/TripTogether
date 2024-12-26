@@ -31,8 +31,6 @@ app.post('/loginuser', async (req, res) => {
         if (!user) {
             return res.send("User does not exist");
         }
-
-        // Use the instance method comparePass on the found user instance
         const isMatch = await user.comparePass(data.Password); 
 
         if (isMatch) {
