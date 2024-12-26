@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login & Registration</title>
+    <style>
+      /* General reset for body and html */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: Poppins, sans-serif;
+      }
+
+      body {
+        background-color: #1a1a1a; /* Dark background for body */
+        color: white;
+      }
+
+      /* Form container styles */
+      #formContainer {
+        width: 40%;
+        margin: 100px auto;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      form {
+        display: block;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      h3 {
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-size: 1.1rem;
+        color: #fff;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        background-color: #333;
+        border: 1px solid #555;
+        border-radius: 5px;
+        color: #fff;
+        font-size: 1rem;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus,
+      input[type="tel"]:focus {
+        border-color: #ff6347;
+        outline: none;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #ff6347;
+        color: white;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #ff4500;
+      }
+
+      /* Toggle link styles */
+      .toggle-link {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+      }
+
+      .toggle-link a {
+        color: #ff6347;
+        text-decoration: none;
+      }
+
+      .toggle-link a:hover {
+        text-decoration: underline;
+      }
+
+      #registerPasswordError {
+        color: red;
+        display: none;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="formContainer">
+      <!-- Login Form -->
+      <form id="loginForm" action="/loginuser" method="POST">
+        <h3>Login Here</h3>
+        <label for="Email">Email</label>
+        <input
+          type="email"
+          placeholder="Enter Student email id"
+          id="email"
+          name="Email"
+          required
+        />
+
+        <label for="Password">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          id="password"
+          name="Password"
+          required
+        />
+
+        <button type="submit">Log In</button>
+
+        <div class="toggle-link">
+          <p>
+            If not registered,
+            <a href="#" onclick="toggleForms(event)">register here</a>.
+          </p>
+        </div>
+      </form>
+
+      <!-- Registration Form -->
+      <form
+        id="registerForm"
+        class="hidden"
+        action="/newuser"
+        method="POST"
+        onsubmit="return validateRegistration()"
+      >
+        <h3>Register Here</h3>
+
+        <label for="Name">Name</label>
+        <input
+          type="text"
+          placeholder="Enter Student Name"
+          id="Name"
+          name="Name"
+          required
+        />
+
+        <label for="Email">Email</label>
+        <input
+          type="email"
+          placeholder="Enter Student email id"
+          id="regEmail"
+          name="Email"
+          required
+        />
+        
+        <label for="PhoneNumber">Phone Number</label>
+        <input
+          type="tel"
+          id="regPhone"
+          placeholder="Enter Your Phone Number"
+          name="PhoneNumber"
+          required
+        />
+
+        <label for="Password">Password</label>
+        <input
+          type="password"
+          placeholder="Password"
+          id="regPassword"
+          name="Password"
+          required
+        />
+        <div id="registerPasswordError">
+          Password must be 8+ characters, with uppercase, lowercase, and a
+          number.
+        </div>
+
+        <button type="submit">Register</button>
+
+        <div class="toggle-link">
+          <p>
+            If already registered,
+            <a href="#" onclick="toggleForms(event)">log in here</a>.
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Function to toggle between login and register forms
+      function toggleForms(event) {
+        event.preventDefault();
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
+        loginForm.classList.toggle("hidden");
+        registerForm.classList.toggle("hidden");
+      }
+
+      // Example validation for registration form (can be customized as needed)
+      function validateRegistration() {
+        const password = document.getElementById("regPassword").value;
+        const passwordError = document.getElementById("registerPasswordError");
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+        if (!regex.test(password)) {
+          passwordError.style.display = "block";
+          return false;
+        } else {
+          passwordError.style.display = "none";
+          return true;
+        }
+      }
+    </script>
+  </body>
+</html>
