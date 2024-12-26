@@ -21,21 +21,30 @@ app.post('/newuser',async(req,res)=>{
      console.log(data);
      res.send("User recived")
 })
-app.post('/loginuser',async(req,res)=>{
-    const data=req.body;
-    const user = await User.findOne({ Email: data.Email});
-     if(!user)
-     {
-        res.send("User does not exist");
-     }
-     if(user.Password==data.Password)
-     {
-        res.sendFile(path.join(__dirname,"public","index.html"));
-     }else{
-        res.send("Password is incorrect");
-     }
-   
-})
+
+app.post('/loginuser', async (req, res) => {
+    const data = req.body;
+
+    try {
+        const user = await User.findOne({ Email: data.Email });
+
+        if (!user) {
+            return res.send("User does not exist");
+        }
+
+        // Use the instance method comparePass on the found user instance
+        const isMatch = await user.comparePass(data.Password); 
+
+        if (isMatch) {
+            res.sendFile(path.join(__dirname, "public", "index.html"));
+        } else {
+            res.send("Password is incorrect");
+        }
+    } catch (err) {
+        res.status(500).send("Server error");
+    }
+});
+
 app.listen(9090, () => {
     console.log(`Server is listening on port 9090`);
 });
