@@ -13,7 +13,7 @@ const userSchema = new Schema({
       required: true,
    },
    PhoneNumber: {
-      type: String, // Changed to 'String' for flexibility with phone formats
+      type: String, 
       required: true,
    },
    Password: {
@@ -22,7 +22,7 @@ const userSchema = new Schema({
    }
 });
 
-// Hash password before saving
+
 userSchema.pre('save', async function (next) {
    const user = this;
    if (!user.isModified('Password')) {
