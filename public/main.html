@@ -3,48 +3,382 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trip&Tarvel</title>
+    <title>TripTogether</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        display: flex;
+        height: 100vh;
+        background-color: #f0f2f5;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 30%;
+        background-color: #ffffff;
+        border-right: 1px solid #d1d7db;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .sidebar:hover {
+        width: 32%;
+      }
+
+      .main-chat {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #25d366, #128c7e);
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 1.2em;
+        letter-spacing: 1px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .search-bar {
+        padding: 15px;
+        background-color: #f0f2f5;
+      }
+
+      .search-bar input {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .search-bar input:focus {
+        outline: none;
+        box-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
+      }
+
+      .group-list,
+      .chat-area {
+        flex-grow: 1;
+        overflow-y: auto;
+      }
+
+      .group {
+        padding: 15px;
+        border-bottom: 1px solid #e9edef;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .group:hover {
+        background-color: #f5f6f6;
+        transform: translateX(5px);
+      }
+
+      .group.active {
+        background-color: #25d366;
+        color: white;
+      }
+
+      .chat-header {
+        background-color: #f0f2f5;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .chat-messages {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: #e5ddd5;
+        background-image: url("https://web.whatsapp.com/img/bg-chat-tile-dark_a4be512e7195b6b733d9110b408f075d.png");
+        background-repeat: repeat;
+      }
+
+      .message-input {
+        padding: 15px;
+        background-color: #f0f2f5;
+        display: flex;
+        align-items: center;
+      }
+
+      .message-input input {
+        flex-grow: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 25px;
+        margin-right: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .message-input input:focus {
+        outline: none;
+        box-shadow: 0 2px 10px rgba(37, 211, 102, 0.3);
+      }
+
+      .message-input button {
+        padding: 12px 20px;
+        background-color: #25d366;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .message-input button:hover {
+        background-color: #128c7e;
+        transform: scale(1.05);
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px;
+        background-color: #f0f2f5;
+      }
+
+      .action-buttons button {
+        padding: 10px 15px;
+        background-color: #25d366;
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .action-buttons button:hover {
+        background-color: #128c7e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Scrollbar Styling */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .group,
+      .chat-header,
+      .message-input {
+        animation: fadeIn 0.5s ease;
+      }
+    </style>
   </head>
   <body>
-    <div class="navbar">
-        <div class="logo">🌍 TripTogether</div>
-        <ul class="nav-links">
-          <li><a href="/logout">Logout</a></li>
-        </ul>
+    <!-- <div class="navbar">
+      <div class="logo">🌍 TripTogether</div>
+      <ul class="nav-links">
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div> -->
+    <div class="sidebar">
+      <div class="header">
+        <h2>ChatWave</h2>
+      </div>
+      <div class="search-bar">
+        <input type="text" placeholder="Search or start new chat" />
+      </div>
+      <div class="action-buttons">
+        <button>Create Group</button>
+        <button>Join Group</button>
+      </div>
+      <div class="group-list">
+        <div class="group">🌟 Friends Forever</div>
+        <div class="group">🎉 Party Planning</div>
+        <div class="group">💼 Work Team</div>
+        <div class="group">👨‍👩‍👧‍👦 Family</div>
+        <div class="group">🏋️ Gym Buddies</div>
+      </div>
     </div>
-
-    
-
+    <div class="main-chat">
+      <div class="chat-header">
+        <h3>🌟 Friends Forever</h3>
+        <button>Delete Group</button>
+      </div>
+      <div class="chat-messages">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div class="message-input">
+        <input type="text" placeholder="Type a message" />
+        <button>Send</button>
+      </div>
+    </div>
     <script>
-      let lastScrollTop = 0;
-      const navbar = document.querySelector(".navbar");
-      const logo = navbar.querySelector(".logo");
+      // let lastScrollTop = 0;
+      // const navbar = document.querySelector(".navbar");
+      // const logo = navbar.querySelector(".logo");
 
-      // Debounce function to make scrolling logic more efficient
-      let isScrolling;
+      // let isScrolling;
 
-      window.addEventListener("scroll", function () {
-        if (isScrolling) clearTimeout(isScrolling);
+      // window.addEventListener("scroll", function () {
+      //   if (isScrolling) clearTimeout(isScrolling);
 
-        // Adding a debounce delay for smoother transitions
-        isScrolling = setTimeout(() => {
-          let currentScroll =
-            window.pageYOffset || document.documentElement.scrollTop;
+      //   isScrolling = setTimeout(() => {
+      //     let currentScroll =
+      //       window.pageYOffset || document.documentElement.scrollTop;
 
-          if (currentScroll > lastScrollTop) {
-            // Scroll Down: Shrink navbar
-            navbar.style.padding = "20px 40px";
-            logo.style.fontSize = "18px";
-          } else {
-            // Scroll Up: Expand navbar
-            navbar.style.padding = "25px 35px";
-            logo.style.fontSize = "24px";
-          }
+      //     if (currentScroll > lastScrollTop) {
+      //       navbar.style.padding = "20px 40px";
+      //       logo.style.fontSize = "18px";
+      //     } else {
+      //       navbar.style.padding = "25px 35px";
+      //       logo.style.fontSize = "24px";
+      //     }
 
-          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // Prevent negative scrolling
-        }, 50); // Delay for smoother changes
+      //     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+      //   }, 50);
+      // });
+
+      const groupElements = document.querySelectorAll(".group");
+      const chatHeader = document.querySelector(".chat-header h3");
+
+      groupElements.forEach((group) => {
+        group.addEventListener("click", () => {
+          groupElements.forEach((g) => g.classList.remove("active"));
+          group.classList.add("active");
+          chatHeader.textContent = group.textContent;
+        });
       });
+      document.addEventListener("DOMContentLoaded", () => {
+  // Simulate user group membership status
+  let userGroupStatus = {
+    "Friends Forever": false,
+    "Party Planning": false,
+    "Work Team": false,
+    "Family": false,
+    "Gym Buddies": false,
+  };
+
+  const groupList = document.querySelector(".group-list");
+  const chatHeader = document.querySelector(".chat-header h3");
+  const chatMessages = document.querySelector(".chat-messages");
+  const messageInput = document.querySelector(".message-input");
+  const deleteGroupButton = document.querySelector(".chat-header button");
+  const createGroupButton = document.querySelector(".action-buttons button:first-child");
+
+  const toggleChatAccess = (groupName) => {
+    if (userGroupStatus[groupName]) {
+      chatMessages.style.display = "block";
+      messageInput.style.display = "flex";
+      deleteGroupButton.style.display = "inline-block";
+    } else {
+      chatMessages.style.display = "none";
+      messageInput.style.display = "none";
+      deleteGroupButton.style.display = "none";
+    }
+  };
+
+  groupList.addEventListener("click", (event) => {
+    if (event.target.classList.contains("group")) {
+      const groupName = event.target.textContent.trim();
+
+      if (userGroupStatus[groupName]) {
+        alert(`You are already a member of ${groupName}`);
+      } else {
+        const join = confirm(`Do you want to join the group "${groupName}"?`);
+        if (join) {
+          userGroupStatus[groupName] = true;
+          alert(`You joined the group "${groupName}"`);
+        }
+      }
+
+      chatHeader.textContent = groupName;
+      toggleChatAccess(groupName);
+    }
+  });
+
+  deleteGroupButton.addEventListener("click", () => {
+    const groupName = chatHeader.textContent.trim();
+
+    if (userGroupStatus[groupName]) {
+      const leave = confirm(`Do you want to leave the group "${groupName}"?`);
+      if (leave) {
+        userGroupStatus[groupName] = false;
+        alert(`You left the group "${groupName}"`);
+        chatHeader.textContent = "";
+        toggleChatAccess(groupName);
+      }
+    } else {
+      alert("You are not a member of this group.");
+    }
+  });
+
+  createGroupButton.addEventListener("click", () => {
+    const newGroupName = prompt("Enter the name of the new group:");
+
+    if (newGroupName) {
+      if (userGroupStatus[newGroupName] !== undefined) {
+        alert("A group with this name already exists.");
+      } else {
+        userGroupStatus[newGroupName] = true; // Automatically join the new group
+
+        const newGroupElement = document.createElement("div");
+        newGroupElement.classList.add("group");
+        newGroupElement.textContent = newGroupName;
+        groupList.appendChild(newGroupElement);
+
+        alert(`Group "${newGroupName}" has been created and you have joined it.`);
+
+        // Update chat header and show chat for the new group
+        chatHeader.textContent = newGroupName;
+        toggleChatAccess(newGroupName);
+      }
+    } else {
+      alert("Group creation cancelled.");
+    }
+  });
+
+  // Initial setup: hide chat messages and input
+  chatMessages.style.display = "none";
+  messageInput.style.display = "none";
+  deleteGroupButton.style.display = "none";
+});
+
 
       function startExploring() {
         alert("Let's start exploring!");
