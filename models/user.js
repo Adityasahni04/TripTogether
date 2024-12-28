@@ -31,8 +31,6 @@ userSchema.pre('save', async function (next) {
    try {
       const salt = await bcrypt.genSalt(10); // Use Blowfish cipher
       const hashedPassword = await bcrypt.hash(user.Password, salt);
-      const hashedPhoneNumber=await bcrypt.hash(user.PhoneNumber,salt);
-      user.PhoneNumber=hashedPhoneNumber;
       user.Password = hashedPassword;
       next();
    } catch (err) {

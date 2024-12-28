@@ -58,7 +58,7 @@ body {
 /* Video styles */
 .videotag {
     position: absolute;
-    top: 30px; /* Below the navbar */
+    /*top: 30px;  Below the navbar */
     width: 100%;
     height: 100vh; /* Occupy full screen height */
 }

@@ -36,13 +36,7 @@
         width: 32%;
       }
 
-      .main-chat {
-        width: 70%;
-        display: flex;
-        flex-direction: column;
-        transition: all 0.3s ease;
-      }
-
+      
       .header {
         background: linear-gradient(135deg, #25d366, #128c7e);
         color: white;
@@ -96,6 +90,13 @@
         color: white;
       }
 
+      .main-chat {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+      }
+
       .chat-header {
         background-color: #f0f2f5;
         padding: 15px;
@@ -120,7 +121,7 @@
         align-items: center;
       }
 
-      .message-input input {
+      .message-input input { 
         flex-grow: 1;
         padding: 12px;
         border: none;
@@ -207,15 +208,61 @@
       .message-input {
         animation: fadeIn 0.5s ease;
       }
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+      }
+
+      .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Adjust width as needed */
+        max-width: 500px;
+      }
+
+      .close {
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      input,
+      textarea {
+        margin-bottom: 10px;
+        padding: 8px;
+        border: 1px solid #ccc;
+      }
+      .main-chat, .chat-header, .chat-messages, .message-input, .message-input input, .message-input button {
+  display: none;
+}
     </style>
   </head>
   <body>
-    <!-- <div class="navbar">
-      <div class="logo">🌍 TripTogether</div>
-      <ul class="nav-links">
-        <li><a href="/logout">Logout</a></li>
-      </ul>
-    </div> -->
     <div class="sidebar">
       <div class="header">
         <h2>ChatWave</h2>
@@ -224,165 +271,45 @@
         <input type="text" placeholder="Search or start new chat" />
       </div>
       <div class="action-buttons">
-        <button>Create Group</button>
-        <button>Join Group</button>
+        <button id="createGroupBtn">Create Group</button>
       </div>
-      <div class="group-list">
-        <div class="group">🌟 Friends Forever</div>
-        <div class="group">🎉 Party Planning</div>
-        <div class="group">💼 Work Team</div>
-        <div class="group">👨‍👩‍👧‍👦 Family</div>
-        <div class="group">🏋️ Gym Buddies</div>
-      </div>
+      <div id="group-list" class="group-list"></div>
     </div>
     <div class="main-chat">
       <div class="chat-header">
-        <h3>🌟 Friends Forever</h3>
-        <button>Delete Group</button>
+        <h3>No</h3>
       </div>
       <div class="chat-messages">
-        <!-- Chat messages will appear here -->
       </div>
       <div class="message-input">
         <input type="text" placeholder="Type a message" />
         <button>Send</button>
       </div>
     </div>
-    <script>
-      // let lastScrollTop = 0;
-      // const navbar = document.querySelector(".navbar");
-      // const logo = navbar.querySelector(".logo");
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create a New Group</h2>
+        <form id="groupForm">
+          <label for="name">Group Name:</label>
+          <input type="text" id="name" name="name" required /><br /><br />
 
-      // let isScrolling;
+          <label for="description">Description:</label>
+          <textarea id="description" name="description" required></textarea
+          ><br /><br />
 
-      // window.addEventListener("scroll", function () {
-      //   if (isScrolling) clearTimeout(isScrolling);
+          <label for="location">Location:</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            required
+          /><br /><br />
 
-      //   isScrolling = setTimeout(() => {
-      //     let currentScroll =
-      //       window.pageYOffset || document.documentElement.scrollTop;
-
-      //     if (currentScroll > lastScrollTop) {
-      //       navbar.style.padding = "20px 40px";
-      //       logo.style.fontSize = "18px";
-      //     } else {
-      //       navbar.style.padding = "25px 35px";
-      //       logo.style.fontSize = "24px";
-      //     }
-
-      //     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
-      //   }, 50);
-      // });
-
-      const groupElements = document.querySelectorAll(".group");
-      const chatHeader = document.querySelector(".chat-header h3");
-
-      groupElements.forEach((group) => {
-        group.addEventListener("click", () => {
-          groupElements.forEach((g) => g.classList.remove("active"));
-          group.classList.add("active");
-          chatHeader.textContent = group.textContent;
-        });
-      });
-      document.addEventListener("DOMContentLoaded", () => {
-  // Simulate user group membership status
-  let userGroupStatus = {
-    "Friends Forever": false,
-    "Party Planning": false,
-    "Work Team": false,
-    "Family": false,
-    "Gym Buddies": false,
-  };
-
-  const groupList = document.querySelector(".group-list");
-  const chatHeader = document.querySelector(".chat-header h3");
-  const chatMessages = document.querySelector(".chat-messages");
-  const messageInput = document.querySelector(".message-input");
-  const deleteGroupButton = document.querySelector(".chat-header button");
-  const createGroupButton = document.querySelector(".action-buttons button:first-child");
-
-  const toggleChatAccess = (groupName) => {
-    if (userGroupStatus[groupName]) {
-      chatMessages.style.display = "block";
-      messageInput.style.display = "flex";
-      deleteGroupButton.style.display = "inline-block";
-    } else {
-      chatMessages.style.display = "none";
-      messageInput.style.display = "none";
-      deleteGroupButton.style.display = "none";
-    }
-  };
-
-  groupList.addEventListener("click", (event) => {
-    if (event.target.classList.contains("group")) {
-      const groupName = event.target.textContent.trim();
-
-      if (userGroupStatus[groupName]) {
-        alert(`You are already a member of ${groupName}`);
-      } else {
-        const join = confirm(`Do you want to join the group "${groupName}"?`);
-        if (join) {
-          userGroupStatus[groupName] = true;
-          alert(`You joined the group "${groupName}"`);
-        }
-      }
-
-      chatHeader.textContent = groupName;
-      toggleChatAccess(groupName);
-    }
-  });
-
-  deleteGroupButton.addEventListener("click", () => {
-    const groupName = chatHeader.textContent.trim();
-
-    if (userGroupStatus[groupName]) {
-      const leave = confirm(`Do you want to leave the group "${groupName}"?`);
-      if (leave) {
-        userGroupStatus[groupName] = false;
-        alert(`You left the group "${groupName}"`);
-        chatHeader.textContent = "";
-        toggleChatAccess(groupName);
-      }
-    } else {
-      alert("You are not a member of this group.");
-    }
-  });
-
-  createGroupButton.addEventListener("click", () => {
-    const newGroupName = prompt("Enter the name of the new group:");
-
-    if (newGroupName) {
-      if (userGroupStatus[newGroupName] !== undefined) {
-        alert("A group with this name already exists.");
-      } else {
-        userGroupStatus[newGroupName] = true; // Automatically join the new group
-
-        const newGroupElement = document.createElement("div");
-        newGroupElement.classList.add("group");
-        newGroupElement.textContent = newGroupName;
-        groupList.appendChild(newGroupElement);
-
-        alert(`Group "${newGroupName}" has been created and you have joined it.`);
-
-        // Update chat header and show chat for the new group
-        chatHeader.textContent = newGroupName;
-        toggleChatAccess(newGroupName);
-      }
-    } else {
-      alert("Group creation cancelled.");
-    }
-  });
-
-  // Initial setup: hide chat messages and input
-  chatMessages.style.display = "none";
-  messageInput.style.display = "none";
-  deleteGroupButton.style.display = "none";
-});
-
-
-      function startExploring() {
-        alert("Let's start exploring!");
-      }
-    </script>
+          <button type="submit">Create</button>
+        </form>
+      </div>
+    </div>
+    <script src="mainScript.js"></script>
   </body>
 </html>

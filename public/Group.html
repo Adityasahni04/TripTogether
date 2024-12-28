@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .group {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .group:hover {
+            background-color: #f0f0f0;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Group API</h1>
+
+    <!-- Add Group -->
+    <h2>Add Group</h2>
+    <form id="addGroupForm">
+        <label for="name">Group Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="description">Description:</label>
+        <input type="text" id="description" name="description"><br><br>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required><br><br>
+        <button type="submit">Add Group</button>
+    </form>
+    <p id="addGroupResponse"></p>
+
+    <h1>Groups</h1>
+    <div id="group-list">
+        <!-- Groups will be dynamically loaded here -->
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:9000';
+        const isAdmin = true; // Set this variable based on the logged-in user's role (true for admin, false for regular users)
+
+        // Function to fetch and display groups
+        async function loadGroups() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/groups`);
+                if (!response.ok) throw new Error('Failed to fetch groups.');
+                const groups = await response.json();
+
+                const groupList = document.getElementById('group-list');
+                groupList.innerHTML = ''; // Clear previous content
+                groups.forEach(group => {
+                    const groupElement = document.createElement('div');
+                    groupElement.classList.add('group');
+                    groupElement.dataset.groupId = group._id;
+
+                    // Create the group HTML structure
+                    groupElement.innerHTML = `
+                        <h3>${group.name}</h3>
+                        <p>${group.description}</p>
+                        <p><strong>Location:</strong> ${group.location}</p>
+                    `;
+
+                    // Add buttons based on user role (admin or regular user)
+                    const joinButton = document.createElement('button');
+                    joinButton.textContent = 'Join Group';
+                    joinButton.addEventListener('click', () => joinGroup(group._id));
+
+                    const leaveButton = document.createElement('button');
+                    leaveButton.textContent = 'Leave Group';
+                    leaveButton.addEventListener('click', () => leaveGroup(group._id));
+
+                    groupElement.appendChild(joinButton);
+                    groupElement.appendChild(leaveButton);
+
+                    // Show Delete button if the user is an admin
+                    if (isAdmin) {
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete Group';
+                        deleteButton.addEventListener('click', () => deleteGroup(group._id));
+                        groupElement.appendChild(deleteButton);
+                    }
+
+                    groupList.appendChild(groupElement);
+                });
+            } catch (error) {
+                console.error('Error loading groups:', error);
+            }
+        }
+
+        // Add Group Form Submission
+        document.getElementById('addGroupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const location = document.getElementById('location').value;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/addGroup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, description, location })
+                });
+                const result = await response.json();
+                document.getElementById('addGroupResponse').textContent = result.message || 'Group added successfully!';
+                loadGroups();
+            } catch (error) {
+                console.error('Error adding group:', error);
+            }
+        });
+
+        // Join Group
+        async function joinGroup(groupId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/joinGroup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ groupId })
+                });
+                const result = await response.json();
+                alert(result.message);
+            } catch (error) {
+                console.error('Error joining group:', error);
+            }
+        }
+
+        // Leave Group
+        async function leaveGroup(groupId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/leaveGroup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ groupId })
+                });
+                const result = await response.json();
+                alert(result.message || 'Left the group successfully!');
+            } catch (error) {
+                console.error('Error leaving group:', error);
+            }
+        }
+
+        // Delete Group
+        async function deleteGroup(groupId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/deleteGroup`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ groupId })
+                });
+                const result = await response.json();
+                alert(result.message || 'Group deleted successfully!');
+                loadGroups(); // Refresh the group list
+            } catch (error) {
+                console.error('Error deleting group:', error);
+            }
+        }
+
+        // Load groups on page load
+        document.addEventListener('DOMContentLoaded', loadGroups);
+    </script>
+</body>
+</html>
