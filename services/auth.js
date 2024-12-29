@@ -26,11 +26,7 @@ const checkForAuth = (cookieName) => {
         try {
             // Auth middleware is synchronous, no need to await
             const userPayload = authMiddleware(tokenCookieValue); // Verify the token
-            console.log('User payload:', userPayload);
-            
-            // If userPayload is valid, attach user details to the request
             req.user = { PhoneNumber: userPayload.PhoneNumber, Name: userPayload.Name };
-            console.log('Authenticated user:', req.user);
             return next(); // Proceed to the next middleware or route handler
         } catch (error) {
             console.error('Authentication error:', error);

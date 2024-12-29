@@ -1,17 +1,81 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
-const app = express();
+const http = require("http");
+const { Server } = require("socket.io");
 const { authMiddleware, generateToken, checkForAuth } = require('./services/auth');
 const User = require("./models/user");
-const Group = require("./models/group"); // Ensure Group model is imported
+const Group = require("./models/group");
+const Message = require("./models/messages"); // Ensure Group model is imported
 const path = require("path");
 const bodyparser = require("body-parser");
 require('./database');
-
+const app = express();
+const server = http.createServer(app);
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+
+
+
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:9000", // Replace with your client URL
+      methods: ["GET", "POST"],
+    },
+  });
+  
+  
+//socket.io 
+io.on("connection", (socket) => {
+    console.log("A user connected");
+
+    // Join a specific group room
+    socket.on("joinGroup", (groupId) => {
+        console.log(groupId);
+        socket.join(groupId);
+        console.log(`User joined group: ${groupId}`);
+    });
+
+    // Listen for new messages
+    socket.on("sendMessage", async (data) => {
+        const { groupId, userId, message } = data;
+        
+        // Input validation
+        if (!groupId || !userId || !message) {
+            return socket.emit("error", "Missing required fields");
+        }
+
+        try {
+            // Save the message in the database
+            const newMessage = new Message({ groupId, userId, message });
+            await newMessage.save();
+            console.log("newMessage:", newMessage);
+            await sendToGroup(groupId, "newMessage", newMessage);
+        } catch (error) {
+            console.error("Error saving message:", error);
+            socket.emit("error", "Error saving message");
+        }
+    });
+    const sendToGroup = async (groupID, event, data) => {
+        const roomSockets = await io.in(groupID).fetchSockets(); // Fetch all sockets in the room
+        if (roomSockets.length === 0) {
+            console.error(`No users connected to the room: ${groupID}`);
+            return;
+        }
+    
+        console.log(`Sending event "${event}" to group "${groupID}"`);
+        roomSockets.forEach((socket) => {
+            socket.emit(event, data);
+        });
+    };
+    socket.on("disconnect", () => {
+        console.log("A user disconnected");
+    });
+});
+
+//socket.io ends here
+
 
 app.get('/', async (req, res) => {    
     res.sendFile(path.join(__dirname, "public", "index.html"));
@@ -78,8 +142,6 @@ app.post('/addGroup',checkForAuth('token'),async (req, res) => {
     console.log("req come")
     const { name, description, location } = req.body;
     const user = req.user;
-    console.log(user); // From checkForAuth middleware
-
     try {
         const newGroup = new Group({
             name,
@@ -97,10 +159,10 @@ app.post('/addGroup',checkForAuth('token'),async (req, res) => {
 });
 
 app.delete('/deleteGroup', checkForAuth('token'), async (req, res) => {
-    const { groupId } = req.body;
+    const {  groupName } = req.body;
     const user = req.user; // From checkForAuth middleware
     try {
-        const group = await Group.findById(groupId);
+        const group = await Group.findOne({ name: groupName });
         if (!group) {
             return res.status(404).json({ message: "Group not found" });
         }
@@ -132,7 +194,6 @@ app.post('/joinGroup',checkForAuth('token'), async (req, res) => {
     
         // Check if the user is already a member
         const isMember = group.members.some(member => member.phoneNumber === user.PhoneNumber);
-        console.log(isMember);
         if (isMember) return res.status(400).json({ message: "User is already a member of the group" });
     
         // Add the user to the group as a member
@@ -145,15 +206,12 @@ app.post('/joinGroup',checkForAuth('token'), async (req, res) => {
     }    
 });
 app.post('/leaveGroup', checkForAuth('token'), async (req, res) => {
-    const { groupId } = req.body;
+    const { groupName } = req.body;
     const user = req.user;
-    console.log(user); // User info from checkForAuth middleware
-
     try {
-        const group = await Group.findById(groupId);
+        const group = await Group.findOne({ name: groupName });
         if (!group) return res.status(404).json({ message: "Group not found" });
 
-        // Check if the user is a member of the group
         const userIndex = group.members.findIndex(member => member.phoneNumber === user.PhoneNumber);
         if (userIndex === -1) return res.status(400).json({ message: "User is not a member of this group" });
 
@@ -185,32 +243,61 @@ app.get('/groups', async (req, res) => {
 });
 
 app.post("/api/check-group-membership", checkForAuth('token'), async (req, res) => {
-    console.log("request comes");
     const { firstLine } = req.body;
-    console.log(firstLine);
-    const user = req.user;
-  
+    const user = req.user; // Assuming req.user is populated by checkForAuth middleware
+
     if (!firstLine) {
-        console.log("error");
+        console.log("Group name not provided");
         return res.status(400).json({ message: "Group name is required" });
     }
-  
+
     try {
-        console.log("i am in try");
         const group = await Group.findOne({ name: firstLine });
-        console.log(group);
+
         if (!group) {
             return res.status(404).json({ message: "Group not found" });
         }
-    
-        console.log(user.PhoneNumber)
-        const isMember = group.members.some(member => member.phoneNumber === user.PhoneNumber);
-        console.log(isMember);
-        return res.json({ isMember });
+
+        // Find the index of the user in the members array
+        const userIndex = group.members.findIndex(member => member.phoneNumber === user.PhoneNumber);
+        const isMember = userIndex !== -1; // If index is not -1, the user is a member
+        const isAdmin = isMember && group.members[userIndex].role === 'admin';
+
+        return res.json({ isMember, isAdmin });
     } catch (error) {
+        console.error("Server error:", error.message);
         return res.status(500).json({ message: "Server error", error: error.message });
     }
-});  
-app.listen(9000, () => {
+});
+
+
+app.get("/api/get-messages/:groupId", async (req, res) => {
+    console.log("request has come form api server");
+    const { groupId } = req.params;
+    console.log("Api:Get"+groupId);
+    try {
+        const messages = await Message.find({ groupId }).sort({ timestamp: 1 });
+        res.json({ messages });
+    } catch (error) {
+        res.status(500).json({ error: "Error fetching messages" });
+    }
+});
+
+app.get("/GetuserId", checkForAuth('token'), async (req, res) => {
+    try {
+      const user = req.user;
+      if (!user) {
+        return res.status(401).json({ error: "User not authenticated" });
+      }
+      res.json(user.PhoneNumber); 
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+  
+
+server.listen(9000, () => {
     console.log(`Server is listening on port 9000`);
 });
+

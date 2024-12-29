@@ -115,3 +115,52 @@ video {
   .overlay-text button:hover {
     background-color: #ff6347;
   }
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .chat-header h3 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+    font-weight: normal;
+  }
+  
+  .chat-header-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn-join, .btn-leave {
+    font-size: 14px;
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .btn-join:hover {
+    background-color: #e6f7e6; /* Light green */
+    border-color: #4caf50; /* Green border */
+    color: #4caf50;
+  }
+  
+  .btn-leave:hover {
+    background-color: #fde6e6; /* Light red */
+    border-color: #f44336; /* Red border */
+    color: #f44336;
+  }
+  
+  .btn-join:focus, .btn-leave:focus {
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+  }
+  
