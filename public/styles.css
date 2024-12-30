@@ -15,9 +15,9 @@ body {
 
 /* Navbar styles */
 .navbar {
-  background-color: black;
+  background-color: rgba(0, 0, 0, 0.1); 
   color: white;
-  padding: 25px 60px; /* Increased padding for more gap from the window edges */
+  padding: 25px 60px;
   position: fixed;
   width: 100%;
   top: 0;
@@ -26,13 +26,13 @@ body {
   align-items: center;
   justify-content: space-between;
   z-index: 1000;
-  transition: padding 0.5s ease, background-color 0.5s ease;
+  transition: padding 0.5s ease; 
 }
 
 .navbar .logo {
   font-size: 24px;
   font-weight: bold;
-  padding-right: 20px; /* Added padding to separate from the nav links */
+  padding-right: 20px; 
   transition: font-size 0.5s ease;
 }
 
@@ -40,7 +40,7 @@ body {
   list-style: none;
   display: flex;
   gap: 40px;
-  margin-right: 20px; /* Space between links and right window edge */
+  margin-right: 20px; 
 }
 
 .nav-links li a {
@@ -58,9 +58,8 @@ body {
 /* Video styles */
 .videotag {
     position: absolute;
-    /*top: 30px;  Below the navbar */
     width: 100%;
-    height: 100vh; /* Occupy full screen height */
+    height: 100vh; 
 }
 
 video {
@@ -75,92 +74,44 @@ video {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  background-color: rgba(0, 0, 0, 0.5); 
   z-index: 1;
 }
 
 /* Overlay text styles */
 .overlay-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-    z-index: 2;
-  }
-  
-  .overlay-text h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-  }
-  
-  .overlay-text p {
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-  }
-  
-  .overlay-text button {
-    background-color: #ff4500;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .overlay-text button:hover {
-    background-color: #ff6347;
-  }
-  .chat-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 15px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e0e0e0;
-  }
-  
-  .chat-header h3 {
-    font-size: 18px;
-    margin: 0;
-    color: #333;
-    font-weight: normal;
-  }
-  
-  .chat-header-buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .btn-join, .btn-leave {
-    font-size: 14px;
-    padding: 5px 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #fff;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .btn-join:hover {
-    background-color: #e6f7e6; /* Light green */
-    border-color: #4caf50; /* Green border */
-    color: #4caf50;
-  }
-  
-  .btn-leave:hover {
-    background-color: #fde6e6; /* Light red */
-    border-color: #f44336; /* Red border */
-    color: #f44336;
-  }
-  
-  .btn-join:focus, .btn-leave:focus {
-    outline: none;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  }
-  
+  position: absolute;
+  top: 50%;
+  left: 20%; 
+  transform: translateY(-50%); 
+  text-align: left;
+  color: white;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  max-width: 600px; 
+}
+
+.overlay-text h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.overlay-text p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.overlay-text button {
+  background-color: #ff4500;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.overlay-text button:hover {
+  background-color: #ff6347;
+}
