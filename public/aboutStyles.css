@@ -7,8 +7,8 @@
 
 /* Navigation Styles */
 nav {
-    background-color: rgba(0, 0, 0, 0); 
-    color: rgba(0, 0, 0, 0.1);
+    background-color: black; 
+    color: black;
     padding: 1rem;
     position: fixed;
     width: 100%;
@@ -24,7 +24,7 @@ nav {
 }
 
 .logo {
-    color: black;
+    color: white;
     text-decoration: none;
   font-size: 24px;
   font-size: 1.5rem;
@@ -40,7 +40,7 @@ nav {
 }
 
 .nav-links a {
-    color: black;
+    color: white;
     text-decoration: none;
     font-size: 18px;
     font-weight: 500;
