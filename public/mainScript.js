@@ -81,11 +81,7 @@ async function loadGroups(searchQuery = "") {
         // Append join button to header
         const groupHeader = groupElement.querySelector(".group-header");
         groupHeader.appendChild(joinButton);
-      } else {
-        const memberLabel = document.createElement("p");
-        memberLabel.textContent = "You are a member or admin of this group.";
-        groupElement.appendChild(memberLabel);
-      }
+      } 
 
       groupList.appendChild(groupElement);
     });
@@ -142,6 +138,7 @@ async function joinGroup(groupId) {
     });
     const result = await response.json();
     alert(result.message);
+    location.reload();
     fetchMessages(groupId);
     socket.emit("joinGroup", groupId);
   } catch (error) {
