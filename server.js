@@ -232,15 +232,25 @@ app.post('/leaveGroup', checkForAuth('token'), async (req, res) => {
     }
 });
 
-app.get('/groups', async (req, res) => {
+app.get('/groups', checkForAuth('token'), async (req, res) => {
     try {
-        const groups = await Group.find({}, '_id name description location'); // Fetch groups with required fields
-        res.status(200).send(groups);
+        const user = req.user; 
+        const groups = await Group.find({}, '_id name description location members'); // Fetch groups with members
+        // Check if the user is a member or admin of each group
+        const userGroups = groups.map(group => {
+            const isMemberOrAdmin = group.members.some(member => member.phoneNumber === user.PhoneNumber && (member.role === 'member' || member.role === 'admin'));
+            return {
+                ...group.toObject(),
+                isMemberOrAdmin // Add a flag to indicate if the user is a member or admin
+            };
+        });
+        res.status(200).send(userGroups); // Send groups with isMemberOrAdmin flag
     } catch (error) {
         console.error('Error fetching groups:', error);
         res.status(500).send({ message: 'Error fetching groups' });
     }
 });
+
 
 app.post("/api/check-group-membership", checkForAuth('token'), async (req, res) => {
     const { firstLine } = req.body;
@@ -295,8 +305,25 @@ app.get("/GetuserId", checkForAuth('token'), async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
+  app.get('/user/joined-groups', checkForAuth('token'), async (req, res) => {
+    try {
+      const phoneNumber = req.user.PhoneNumber; // Extract phone number from the token
+      const user = await User.findOne({ PhoneNumber: phoneNumber })
+        .populate('joinedGroups');  // Populate the 'joinedGroups' field with Group documents
   
-
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Return the populated groups
+      res.status(200).json({ joinedGroups: user.joinedGroups });
+    } catch (error) {
+      console.error("Error fetching joined groups:", error);
+      res.status(500).json({ message: 'Failed to fetch joined groups' });
+    }
+  });
+  
+  
 server.listen(9000, () => {
     console.log(`Server is listening on port 9000`);
 });

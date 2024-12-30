@@ -3,9 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aboutus</title>
+    <title>About Us</title>
+    <link rel="stylesheet" href= "AboutStyle.css" />
 </head>
 <body>
+    <nav>
+        <div class="nav-container">
+            <a href="/" class="logo">
+                🌍 TripTogether
+            </a>
+            <button class="menu-btn">☰</button>
+            <div class="nav-links">
+            <li><a href="/verify">DashBoard</a></li>
+          <li><a href="Aboutus.html">About Us</a></li>
+          <li><a href="#login">Login</a></li>
+          <li><a href="signup.html">Signup</a></li>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>ABOUT</h1>
+            <p></p>
+        </div>
+        <svg class="torn-paper" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" fill="white"></path>
+        </svg>
+    </div>
+
     
+    <div class="content">
+        <!-- About David Section -->
+        <div class="content-text">
+            <div class="about-header">
+                <h2>ABOUT ME</h2>
+                <h3>David</h3>
+            </div>
+    
+            <p>
+                Thanks for looking! I'm David Leiter, and this is my <a href="/blog">travel blog</a>.
+            </p>
+    
+            <p>
+                I'm an American who's been traveling the world full time for 9 years. Nowadays, I'm usually in 
+                <a href="/destinations/bali">Bali, Indonesia</a>, with my wife Intan.
+            </p>
+    
+            <p>
+                I first fell in love with travel on a solo road trip across <a href="/destinations/iceland">Iceland</a> 
+                in 2016. My budget was small, so I slept in the back of a rental car for 1 month while I drove 7,000 
+                kilometers around the country, filming all the scenic places in Iceland.
+            </p>
+    
+            <p>
+                One of my first videos racked up a few million views and was featured on international TV by 
+                <a href="https://www.bbc.com/travel">BBC Travel</a>.
+            </p>
+        </div>
+    
+        <!-- Image Grid Section for David -->
+        <div class="image-grid">
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963" alt="Travel image 1" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1528164344705-47542687000d" alt="Travel image 2" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e" alt="Travel image 3" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4" alt="Travel image 4" />
+            </div>
+        </div>
+    
+        <!-- About Aditya Section -->
+        <div class="content-text">
+            <div class="about-header">
+                <h2>ABOUT ME</h2>
+                <h3>Aditya</h3>
+            </div>
+    
+            <p>
+                Thanks for looking! I'm Aditya Raj, and this is my <a href="/blog">travel blog</a>.
+            </p>
+    
+            <p>
+                I'm an Indian who's been exploring unique cultures full time for 5 years. Nowadays, I'm often found in 
+                <a href="/destinations/goa">Goa, India</a>, with my family.
+            </p>
+    
+            <p>
+                I first fell in love with travel on a solo backpacking trip across <a href="/destinations/himalayas">The Himalayas</a> 
+                in 2018. My budget was modest, so I camped in remote villages for 2 months while trekking 500 kilometers, documenting the beauty of the mountains.
+            </p>
+    
+            <p>
+                One of my early photos was featured in a national magazine by 
+                <a href="https://www.nationalgeographic.com/travel">National Geographic Travel</a>.
+            </p>
+        </div>
+    
+        <!-- Image Grid Section for Aditya -->
+        <div class="image-grid">
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0" alt="Travel image 5" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1491308056676-205b7c9be99a" alt="Travel image 6" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1541233349642-6e425fe6190e" alt="Travel image 7" />
+            </div>
+            <div class="image-item">
+                <img src="https://images.unsplash.com/photo-1521295121783-8a321d551ad2" alt="Travel image 8" />
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        // Mobile Menu Toggle
+        const menuBtn = document.querySelector('.menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav')) {
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Add scroll padding for fixed header
+        document.documentElement.style.setProperty(
+            '--scroll-padding', 
+            document.querySelector('nav').offsetHeight + 'px'
+        );
+    </script>
 </body>
 </html>

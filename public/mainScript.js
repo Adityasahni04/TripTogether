@@ -47,16 +47,22 @@ async function loadGroups() {
         </div>
       `;
 
-      // Join button
-      const joinButton = document.createElement("button");
-      joinButton.textContent = "Join Group";
-      joinButton.classList.add("join-btn");
-      joinButton.setAttribute("aria-label", `Join the group ${group.name}`);
-      joinButton.addEventListener("click", () => joinGroup(group._id));
+      // Check if the user is a member or admin
+      if (!group.isMemberOrAdmin) {
+        const joinButton = document.createElement("button");
+        joinButton.textContent = "Join Group";
+        joinButton.classList.add("join-btn");
+        joinButton.setAttribute("aria-label", `Join the group ${group.name}`);
+        joinButton.addEventListener("click", () => joinGroup(group._id));
 
-      // Append join button to header
-      const groupHeader = groupElement.querySelector(".group-header");
-      groupHeader.appendChild(joinButton);
+        // Append join button to header
+        const groupHeader = groupElement.querySelector(".group-header");
+        groupHeader.appendChild(joinButton);
+      } else {
+        const memberLabel = document.createElement("p");
+        memberLabel.textContent = "You are a member or admin of this group.";
+        groupElement.appendChild(memberLabel);
+      }
 
       groupList.appendChild(groupElement);
     });
@@ -64,6 +70,7 @@ async function loadGroups() {
     console.error("Error loading groups:", error);
   }
 }
+
 
 // Placeholder functions for group actions
 document.getElementById("groupForm")?.addEventListener("submit", async (e) => {
@@ -190,6 +197,10 @@ async function leaveGroup(groupName) {
     });
     const result = await response.json();
     alert(result.message || "Left the group successfully!");
+    if(result.message==="Successfully left the group")
+    {
+      location.reload();
+    }
   } catch (error) {
     console.error("Error leaving group:", error);
   }
@@ -205,6 +216,7 @@ async function deleteGroup(groupName) {
     });
     const result = await response.json();
     alert(result.message || "Group deleted successfully!");
+    location.reload();
     loadGroups();
   } catch (error) {
     console.error("Error deleting group:", error);

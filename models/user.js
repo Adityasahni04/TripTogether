@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema; // Fixed typo in "Schema"
+const Schema = mongoose.Schema;
+const Group = require("./group"); 
 const bcrypt = require('bcrypt');
 
 // Define the schema for the User model
@@ -19,10 +20,10 @@ const userSchema = new Schema({
    Password: {
       type: String,
       required: true,
-   }
+   },
 });
 
-
+// Pre-save middleware to hash password before saving the user
 userSchema.pre('save', async function (next) {
    const user = this;
    if (!user.isModified('Password')) {
