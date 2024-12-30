@@ -24,14 +24,37 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 };
-async function loadGroups() {
+const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function () {
+  console.log(searchInput.value);
+  loadGroups(searchInput.value); // Pass the search query to filter the groups
+});
+
+async function loadGroups(searchQuery = "") {
   try {
     const response = await fetch(`${API_BASE_URL}/groups`);
+    console.log(response);
     if (!response.ok) throw new Error("Failed to fetch groups.");
     const groups = await response.json();
+    groupList.innerHTML = ""; 
 
-    groupList.innerHTML = ""; // Clear previous content
-    groups.forEach((group) => {
+    const filteredGroups = groups.filter((group) =>
+      group.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    // Sort groups: Those whose name starts with the search query come first
+    filteredGroups.sort((a, b) => {
+      const aStartsWithQuery = a.name.toLowerCase().startsWith(searchQuery.toLowerCase());
+      const bStartsWithQuery = b.name.toLowerCase().startsWith(searchQuery.toLowerCase());
+
+      if (aStartsWithQuery && !bStartsWithQuery) return -1; // a comes first
+      if (!aStartsWithQuery && bStartsWithQuery) return 1; // b comes first
+      return 0; // no change if both start or don't start with query
+    });
+
+    // Create the HTML for each group
+    filteredGroups.forEach((group) => {
       const groupElement = document.createElement("div");
       groupElement.classList.add("group");
       groupElement.dataset.groupId = group._id;
