@@ -424,3 +424,17 @@ display: none;
   background-color: #e0e0e0;
   color: black;
 }
+.unread-badge {
+  background-color: #25D366; /* WhatsApp green color */
+  color: white;
+  border-radius: 50%; /* Perfect circle */
+  padding: 0.2em 0.4em; /* Smaller padding */
+  font-size: 0.8em; /* Slightly smaller font */
+  font-weight: bold; /* Makes the number stand out */
+  margin-left: 0.5em;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center; /* Centers the text inside the circle */
+  min-width: 1.4em; /* Small but noticeable width */
+  height: 1.4em; /* Equal height to maintain circle shape */
+}
