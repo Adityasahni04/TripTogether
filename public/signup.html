@@ -20,7 +20,7 @@
       .navbar {
         background-color: black;
         color: white;
-        padding: 25px 60px; /* Increased padding for more gap from the window edges */
+        padding: 20px 40px; /* Increased padding for more gap from the window edges */
         position: fixed;
         width: 100%;
         top: 0;
@@ -37,6 +37,8 @@
         font-weight: bold;
         padding-right: 20px; /* Added padding to separate from the nav links */
         transition: font-size 0.5s ease;
+        text-decoration: none; /* Removes underline */
+        color: inherit; 
       }
 
       .nav-links {
@@ -60,7 +62,7 @@
       .container {
         display: flex;
         width: 100%;
-        margin-top: 80px;
+        margin-top: 70px;
       }
 
       .image-section {
@@ -216,7 +218,7 @@
   </head>
   <body>
     <div class="navbar">
-      <div class="logo">🌍 TripTogether</div>
+      <a href="/" class="logo">🌍 TripTogether</a>
       <ul class="nav-links">
         <li><a href="/verify">DashBoard</a></li>
         <li><a href="Aboutus.html">About Us</a></li>
@@ -334,6 +336,32 @@
     </div>
 
     <script>
+
+let lastScrollTop = 0;
+      const navbar = document.querySelector(".navbar");
+      const logo = navbar.querySelector(".logo");
+
+      let isScrolling;
+
+      window.addEventListener("scroll", function () {
+        if (isScrolling) clearTimeout(isScrolling);
+
+        
+        isScrolling = setTimeout(() => {
+          let currentScroll =
+            window.pageYOffset || document.documentElement.scrollTop;
+
+          if (currentScroll > lastScrollTop) {
+            navbar.style.padding = "20px 40px";
+            logo.style.fontSize = "18px";
+          } else {
+            navbar.style.padding = "25px 35px";
+            logo.style.fontSize = "24px";
+          }
+
+          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
+        }, 50); 
+      });
       function toggleForm() {
         const loginForm = document.getElementById("loginForm");
         const registerForm = document.getElementById("registerForm");
@@ -368,32 +396,6 @@
           return true;
         }
       }
-       let lastScrollTop = 0;
-      const navbar = document.querySelector(".navbar");
-      const logo = navbar.querySelector(".logo");
-
-      let isScrolling;
-
-      window.addEventListener("scroll", function () {
-        if (isScrolling) clearTimeout(isScrolling);
-
-        
-        isScrolling = setTimeout(() => {
-          let currentScroll =
-            window.pageYOffset || document.documentElement.scrollTop;
-
-          if (currentScroll > lastScrollTop) {
-            navbar.style.padding = "20px 40px";
-            logo.style.fontSize = "18px";
-          } else {
-            navbar.style.padding = "25px 35px";
-            logo.style.fontSize = "24px";
-          }
-
-          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
-        }, 50); 
-      });
-
     </script>
   </body>
 </html>

@@ -6,55 +6,49 @@
 }
 
 /* Navigation Styles */
-nav {
-    background-color: black; 
-    color: black;
-    padding: 1rem;
+.navbar {
+    background-color:black; 
+    color: white;
+    padding: 20px 40px;
     position: fixed;
     width: 100%;
-    z-index: 1000;
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    top: 0;
+    left: 0;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    color: white;
-    text-decoration: none;
-  font-size: 24px;
-  font-size: 1.5rem;
+    z-index: 1000;
+    transition: padding 0.5s ease; 
+  }
+  
+  .navbar .logo {
+    font-size: 24px;
     font-weight: bold;
+    padding-right: 20px; 
+    transition: font-size 0.5s ease;
+    text-decoration: none; /* Removes underline */
+    color: inherit; 
+  }
+  
+  .nav-links {
+    list-style: none;
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.nav-links {
-    display: flex;
-    gap: 2rem;
-}
-
-.nav-links a {
+    gap: 40px;
+    margin-right: 20px; 
+  }
+  
+  .nav-links li a {
     color: white;
     text-decoration: none;
     font-size: 18px;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-.nav-links a:hover {
-    color: #f97316;
-}
-
-.nav-links a.active {
-    color: #f97316;
-}
-
+    transition: color 0.3s ease;
+    font-family: Poppins, sans-serif;
+  }
+  
+  .nav-links li a:hover {
+    color: #ff6347;
+  }
+  
 .menu-btn {
     display: none;
     background: none;

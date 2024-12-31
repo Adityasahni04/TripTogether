@@ -15,9 +15,9 @@ body {
 
 /* Navbar styles */
 .navbar {
-  background-color: rgba(0, 0, 0, 0.1); 
+  background-color:black; 
   color: white;
-  padding: 25px 60px;
+  padding: 20px 40px;
   position: fixed;
   width: 100%;
   top: 0;
@@ -34,6 +34,8 @@ body {
   font-weight: bold;
   padding-right: 20px; 
   transition: font-size 0.5s ease;
+  text-decoration: none; /* Removes underline */
+  color: inherit; 
 }
 
 .nav-links {

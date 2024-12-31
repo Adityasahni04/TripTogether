@@ -57,6 +57,7 @@ io.on("connection", (socket) => {
             socket.emit("error", "Error saving message");
         }
     });
+    
     const sendToGroup = async (groupID, event, data) => {
         const roomSockets = await io.in(groupID).fetchSockets(); // Fetch all sockets in the room
         if (roomSockets.length === 0) {
@@ -322,8 +323,51 @@ app.get("/GetuserId", checkForAuth('token'), async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch joined groups' });
     }
   });
+   
+//unread message
+app.get("/api/get-unread-messages/:groupId/:userId", async (req, res) => {
+    const { groupId, userId } = req.params;
+    try {
+      const unreadMessages = await Message.find({
+        groupId,                // Match messages in the specified group
+        userId: { $ne: userId }, // Exclude messages sent by the requesting user
+        readBy: { $ne: userId }, // Exclude messages already marked as read by the user
+      });
   
+      res.json({ messages: unreadMessages });
+    } catch (error) {
+      console.error("Error fetching unread messages:", error);
+      res.status(500).json({ message: "Error fetching unread messages" });
+    }
+  });
   
+  app.post("/api/mark-messages-read", async (req, res) => {
+    console.log("Request in mark-messages-read");
+    const { groupId, userId } = req.body;
+    console.log("GroupId:", groupId, "UserId:", userId);
+  
+    try {
+      if (!groupId || !userId) {
+        return res.status(400).json({ message: "Group ID and User ID are required." });
+      }
+  
+      // Update messages by adding the userId to the readBy array (using $push)
+      const updateResult = await Message.updateMany(
+        { groupId },
+        { $addToSet: { readBy: userId } }
+      );
+  
+      console.log(`Matched: ${updateResult.matchedCount}, Updated: ${updateResult.modifiedCount}`);
+      if (updateResult.modifiedCount === 0) {
+        console.warn("No messages were updated. Verify the query conditions.");
+      }
+  
+      res.status(200).json({ message: "Messages marked as read successfully." });
+    } catch (error) {
+      console.error("Error marking messages as read:", error);
+      res.status(500).json({ message: "Error marking messages as read." });
+    }
+  });    
 server.listen(9000, () => {
     console.log(`Server is listening on port 9000`);
 });

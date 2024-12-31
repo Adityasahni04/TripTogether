@@ -6,6 +6,7 @@ var modal = document.getElementById("myModal");
 var btn = document.getElementById("createGroupBtn");
 
 var span = document.getElementsByClassName("close")[0];
+let currentActiveGroup = null;
 
 const socket = io(API_BASE_URL);
 
@@ -34,62 +35,88 @@ searchInput.addEventListener("input", function () {
 async function loadGroups(searchQuery = "") {
   try {
     const response = await fetch(`${API_BASE_URL}/groups`);
-    console.log(response);
     if (!response.ok) throw new Error("Failed to fetch groups.");
     const groups = await response.json();
-    groupList.innerHTML = ""; 
+    groupList.innerHTML = ""; // Ensure `groupList` is a valid DOM element
 
+    // Filter and sort groups
     const filteredGroups = groups.filter((group) =>
       group.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    // Sort groups: Those whose name starts with the search query come first
     filteredGroups.sort((a, b) => {
-      const aStartsWithQuery = a.name.toLowerCase().startsWith(searchQuery.toLowerCase());
-      const bStartsWithQuery = b.name.toLowerCase().startsWith(searchQuery.toLowerCase());
-
-      if (aStartsWithQuery && !bStartsWithQuery) return -1; // a comes first
-      if (!aStartsWithQuery && bStartsWithQuery) return 1; // b comes first
-      return 0; // no change if both start or don't start with query
+      const aStartsWithQuery = a.name
+        .toLowerCase()
+        .startsWith(searchQuery.toLowerCase());
+      const bStartsWithQuery = b.name
+        .toLowerCase()
+        .startsWith(searchQuery.toLowerCase());
+      if (aStartsWithQuery && !bStartsWithQuery) return -1;
+      if (!aStartsWithQuery && bStartsWithQuery) return 1;
+      return 0;
     });
 
-    // Create the HTML for each group
-    filteredGroups.forEach((group) => {
-      const groupElement = document.createElement("div");
-      groupElement.classList.add("group");
-      groupElement.dataset.groupId = group._id;
+    const response1 = await fetch(`${API_BASE_URL}/GetuserId`);
+    if (!response1.ok) throw new Error("Failed to fetch user ID."); // Handle potential errors
+    const data = await response1.json();
+    const userId = data;
 
-      // Group content
-      groupElement.innerHTML = `
-        <div class="group-content">
-          <div class="group-header">
-            <h3>${group.name}</h3>
+    filteredGroups.forEach(async (group) => {
+      try {
+        // Only fetch unread messages if the user is a member or admin
+        let unreadCount = 0;
+        if (group.isMemberOrAdmin) {
+          const unreadResponse = await fetch(
+            `${API_BASE_URL}/api/get-unread-messages/${group.name}/${userId}`
+          );
+          if (!unreadResponse.ok)
+            throw new Error("Failed to fetch unread messages.");
+          const { messages } = await unreadResponse.json();
+          unreadCount = messages.length;
+        }
+
+        // Create group element
+        const groupElement = document.createElement("div");
+        groupElement.classList.add("group");
+        groupElement.dataset.groupId = group._id;
+
+        // Group content
+        groupElement.innerHTML = `
+          <div class="group-content">
+            <div class="group-header">
+              <h3>${group.name}</h3>
+              ${
+                unreadCount > 0
+                  ? `<span class="unread-badge">${unreadCount}</span>`
+                  : ""
+              }
+            </div>
+            <p>${group.description}</p>
+            <p><strong>Location:</strong> ${group.location}</p>
           </div>
-          <p>${group.description}</p>
-          <p><strong>Location:</strong> ${group.location}</p>
-        </div>
-      `;
+        `;
 
-      // Check if the user is a member or admin
-      if (!group.isMemberOrAdmin) {
-        const joinButton = document.createElement("button");
-        joinButton.textContent = "Join Group";
-        joinButton.classList.add("join-btn");
-        joinButton.setAttribute("aria-label", `Join the group ${group.name}`);
-        joinButton.addEventListener("click", () => joinGroup(group._id));
+        // Add join button if the user isn't a member or admin
+        if (!group.isMemberOrAdmin) {
+          const joinButton = document.createElement("button");
+          joinButton.textContent = "Join Group";
+          joinButton.classList.add("join-btn");
+          joinButton.setAttribute("aria-label", `Join the group ${group.name}`);
+          joinButton.addEventListener("click", () => joinGroup(group._id));
+          const groupHeader = groupElement.querySelector(".group-header");
+          groupHeader.appendChild(joinButton);
+        }
 
-        // Append join button to header
-        const groupHeader = groupElement.querySelector(".group-header");
-        groupHeader.appendChild(joinButton);
-      } 
-
-      groupList.appendChild(groupElement);
+        // Append to group list
+        groupList.appendChild(groupElement);
+      } catch (err) {
+        console.error(`Error processing group ${group.name}:`, err);
+      }
     });
   } catch (error) {
     console.error("Error loading groups:", error);
   }
 }
-
 
 // Placeholder functions for group actions
 document.getElementById("groupForm")?.addEventListener("submit", async (e) => {
@@ -117,7 +144,7 @@ document.getElementById("groupForm")?.addEventListener("submit", async (e) => {
       alert(`Group created successfully! ${result.message || ""}`); // Show success message
       loadGroups();
       socket.emit("joinGroup", name);
-      fetchMessages(name); 
+      fetchMessages(name);
     } else {
       const errorData = await response.json();
       alert(`Error: ${errorData.message || "Failed to add group"}`); // Show error message
@@ -146,30 +173,53 @@ async function joinGroup(groupId) {
   }
 }
 //fetch messages
+
 async function fetchMessages(groupId) {
   try {
-    console.log("I am in feach messages");
-      const response = await fetch(`${API_BASE_URL}/api/get-messages/${groupId}`);
-      const data = await response.json();
-      console.log(data);
+    console.log("I am in fetch messages");
 
-      const messagesContainer = document.querySelector(".chat-messages");
-      messagesContainer.innerHTML = ""; // Clear old messages
-      data.messages.forEach((msg) => appendMessage(msg));
+    // Fetch messages from the server
+    const response = await fetch(`${API_BASE_URL}/api/get-messages/${groupId}`);
+    if (!response.ok) throw new Error("Failed to fetch messages.");
+    const data = await response.json();
+    console.log(data);
+
+    // Clear old messages and append new ones
+    const messagesContainer = document.querySelector(".chat-messages");
+    messagesContainer.innerHTML = ""; // Clear old messages
+    data.messages.forEach((msg) => appendMessage(msg));
+
+    const response1 = await fetch(`${API_BASE_URL}/GetuserId`);
+    const data1 = await response1.json();
+    const userId = data1; // Assume getUserId() retrieves the current user's ID
+    try {
+      const markReadResponse = await fetch(`${API_BASE_URL}/api/mark-messages-read`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ groupId, userId }),
+      });
+
+      if (!markReadResponse.ok) {
+        console.error("Error marking messages as read:", markReadResponse.status);
+        throw new Error("Failed to mark messages as read.");
+      }
+    } catch (markError) {
+      console.error("Error in marking messages as read:", markError);
+    }
   } catch (error) {
-      console.error("Error fetching messages:", error);
+    console.error("Error fetching messages:", error);
   }
 }
-
-
-socket.on("newMessage", async(message) => {
+socket.on("newMessage", async (message) => {
   console.log("New message received:", message);
-  console.log("requesting is append the message");
   const response = await fetch(`${API_BASE_URL}/GetuserId`);
   const data = await response.json();
-    const userId = data;
-    console.log("Leftid"+userId);
+  const userId = data;
+  console.log("User ID:", userId);
+
   const messagesContainer = document.querySelector(".chat-messages");
+
+  // Create a new message element
   const messageElement = document.createElement("div");
   messageElement.className = "message";
   if (message.userId === userId) {
@@ -179,21 +229,40 @@ socket.on("newMessage", async(message) => {
   }
   messageElement.innerHTML = `${message.userId}: ${message.message}`;
   messagesContainer.appendChild(messageElement);
+
+  // Handle unread message count
+  if (message.groupId !== currentActiveGroup) {
+    const groupElement = document.querySelector(
+      `.group[data-group-id="${message.groupId}"]`
+    );
+    if (groupElement) {
+      const unreadBadge = groupElement.querySelector(".unread-badge");
+      if (unreadBadge) {
+        unreadBadge.textContent = parseInt(unreadBadge.textContent) + 1; // Increment unread count
+      } else {
+        const newBadge = document.createElement("span");
+        newBadge.className = "unread-badge";
+        newBadge.textContent = "1"; // Set unread count to 1
+        groupElement.querySelector(".group-header").appendChild(newBadge);
+      }
+    }
+  }
 });
 
 function sendMessage(groupId, userId, message) {
   if (message.trim() !== "") {
-      socket.emit("sendMessage", { groupId, userId, message });
+    socket.emit("sendMessage", { groupId, userId, message });
   }
 }
+
 
 // Append a message to the chat
 async function appendMessage(message) {
   console.log("requesting is append the message");
   const response = await fetch(`${API_BASE_URL}/GetuserId`);
   const data = await response.json();
-    const userId = data;
-    console.log("Leftid"+userId);
+  const userId = data;
+  console.log("Leftid" + userId);
   const messagesContainer = document.querySelector(".chat-messages");
   const messageElement = document.createElement("div");
   messageElement.className = "message";
@@ -217,8 +286,7 @@ async function leaveGroup(groupName) {
     });
     const result = await response.json();
     alert(result.message || "Left the group successfully!");
-    if(result.message==="Successfully left the group")
-    {
+    if (result.message === "Successfully left the group") {
       location.reload();
     }
   } catch (error) {
@@ -242,8 +310,6 @@ async function deleteGroup(groupName) {
     console.error("Error deleting group:", error);
   }
 }
-
-
 
 groupList.addEventListener("click", async (event) => {
   const clickedGroup = event.target.closest(".group");
@@ -288,15 +354,13 @@ groupList.addEventListener("click", async (event) => {
       }
 
       setActiveGroup(firstLine, isAdmin);
-      socket.emit("joinGroup",firstLine);
-      fetchMessages(firstLine);  
+      socket.emit("joinGroup", firstLine);
+      fetchMessages(firstLine);
     } catch (error) {
       console.error("Error checking group membership:", error);
     }
   }
 });
-
-let currentActiveGroup = null;
 
 function setActiveGroup(groupName, isAdmin) {
   currentActiveGroup = groupName;
@@ -358,7 +422,7 @@ async function handleSendMessage() {
       // Await the fetch response and parse the JSON data
       const response = await fetch(`${API_BASE_URL}/GetuserId`);
       const data = await response.json();
-        const userId = data;  
+      const userId = data;
 
       // Send message using the current active group and user ID
       sendMessage(currentActiveGroup, userId, message);

@@ -7,20 +7,14 @@
     <link rel="stylesheet" href="aboutStyles.css" />
 </head>
 <body>
-    <nav>
-        <div class="nav-container">
-            <a href="/" class="logo">
-                🌍 TripTogether
-            </a>
-            <button class="menu-btn">☰</button>
-            <div class="nav-links">
-                <li><a href="/verify">DashBoard</a></li>
-                <li><a href="Aboutus.html">About Us</a></li>
-                <li><a href="#login">Login</a></li>
-                <li><a href="signup.html">Signup</a></li>
-            </div>
-        </div>
-    </nav>
+    <div class="navbar">
+        <a href="/" class="logo">🌍 TripTogether</a>
+        <ul class="nav-links">
+          <li><a href="/verify">DashBoard</a></li>
+          <li><a href="Aboutus.html">About Us</a></li>
+          <li><a href="signup.html">SingIn&SignUp</a></li>
+        </ul>
+    </div>
 
     <div class="hero">
         <div class="hero-content">
@@ -58,13 +52,13 @@
                 <img src="../src/adi1.jpg" alt="Aditya1" />
             </div>
             <div class="image-item">
-                <img src="../src/adi3.jpg" alt="Aditya photographing a sunset" />
+                <img src="../src/adi5.jpg" alt="Aditya photographing a sunset" />
             </div>
             <div class="image-item">
                 <img src="../src/adi4.jpg" alt="Aditya trekking in the mountains" />
             </div>
             <div class="image-item">
-                <img src="../src/adi2.jpg" alt="Aditya2" />
+                <img src="../src/adi3.jpg" alt="Aditya2" />
             </div>
         </div>
     </div>
@@ -165,57 +159,96 @@
         </ul>
       </footer>
 
-    <script>
+      <script>
         // Mobile Menu Toggle
+
+
+        let lastScrollTop = 0;
+        const navbar = document.querySelector(".navbar");
+        const logo = navbar?.querySelector(".logo");
+    
+        let isScrolling;
+    
+        if (navbar && logo) {
+            window.addEventListener("scroll", () => {
+                if (isScrolling) clearTimeout(isScrolling);
+    
+                isScrolling = setTimeout(() => {
+                    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+                    if (currentScroll > lastScrollTop) {
+                        navbar.style.padding = "20px 40px";
+                        logo.style.fontSize = "18px";
+                    } else {
+                        navbar.style.padding = "25px 35px";
+                        logo.style.fontSize = "24px";
+                    }
+    
+                    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
+                }, 50); 
+            });
+        }
         const menuBtn = document.querySelector('.menu-btn');
         const navLinks = document.querySelector('.nav-links');
-
+    
         menuBtn.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-
+    
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav')) {
+            if (!e.target.closest('nav') && !menuBtn.contains(e.target)) {
                 navLinks.classList.remove('active');
             }
         });
-
+    
         // Add scroll padding for fixed header
-        document.documentElement.style.setProperty(
-            '--scroll-padding', 
-            document.querySelector('nav').offsetHeight + 'px'
-        );
-
+        const nav = document.querySelector('nav');
+        if (nav) {
+            document.documentElement.style.setProperty(
+                '--scroll-padding', 
+                `${nav.offsetHeight}px`
+            );
+        }
+    
         // Image Popup Functionality
         const imagePopup = document.getElementById('imagePopup');
         const popupImage = document.getElementById('popupImage');
-        const closePopup = document.getElementsByClassName('close-popup')[0];
+        const closePopup = document.querySelector('.close-popup');
         
         // Get all images inside .image-item
         const images = document.querySelectorAll('.image-item img');
         
         // Add click event to all images
         images.forEach(img => {
-            img.addEventListener('click', function() {
-                imagePopup.style.display = 'flex';
-                popupImage.src = this.src;
-                popupImage.alt = this.alt;
+            img.addEventListener('click', () => {
+                if (imagePopup && popupImage) {
+                    imagePopup.style.display = 'flex';
+                    popupImage.src = img.src;
+                    popupImage.alt = img.alt || "Popup Image";
+                }
             });
         });
         
         // Close popup when clicking on X
-        closePopup.onclick = function() {
-            imagePopup.style.display = 'none';
+        if (closePopup) {
+            closePopup.addEventListener('click', () => {
+                if (imagePopup) imagePopup.style.display = 'none';
+            });
         }
         
         // Close popup when clicking outside the image
-        imagePopup.onclick = function(event) {
-            if (event.target === imagePopup) {
-                imagePopup.style.display = 'none';
-            }
+        if (imagePopup) {
+            imagePopup.addEventListener('click', (event) => {
+                if (event.target === imagePopup) {
+                    imagePopup.style.display = 'none';
+                }
+            });
         }
-
+    
+        // Navbar Scroll Effect
+        
     </script>
+    
 </body>
 </html>
