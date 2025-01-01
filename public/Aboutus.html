@@ -74,7 +74,7 @@
                 <img src="../src/asmi5.jpg" alt="Asmi hiking in nature" />
             </div>
             <div class="image-item">
-                <img src="../src/asmi8.jpg" alt="Asmi at a local market" />
+                <img src="../src/asmi11.jpg" alt="Asmi at a local market" />
             </div>
             <div class="image-item">
                 <img src="../src/asmi2.jpg" alt="Asmi writing in her travel journal" />
@@ -161,33 +161,6 @@
 
       <script>
         // Mobile Menu Toggle
-
-
-        let lastScrollTop = 0;
-        const navbar = document.querySelector(".navbar");
-        const logo = navbar?.querySelector(".logo");
-    
-        let isScrolling;
-    
-        if (navbar && logo) {
-            window.addEventListener("scroll", () => {
-                if (isScrolling) clearTimeout(isScrolling);
-    
-                isScrolling = setTimeout(() => {
-                    let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-                    if (currentScroll > lastScrollTop) {
-                        navbar.style.padding = "20px 40px";
-                        logo.style.fontSize = "18px";
-                    } else {
-                        navbar.style.padding = "25px 35px";
-                        logo.style.fontSize = "24px";
-                    }
-    
-                    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
-                }, 50); 
-            });
-        }
         const menuBtn = document.querySelector('.menu-btn');
         const navLinks = document.querySelector('.nav-links');
     

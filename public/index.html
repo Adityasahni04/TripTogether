@@ -1,64 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trip&Tarvel</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="navbar">
-      <a href="/" class="logo">🌍 TripTogether</a>
-        <ul class="nav-links">
-          <li><a href="/verify">DashBoard</a></li>
-          <li><a href="Aboutus.html">About Us</a></li>
-          <li><a href="signup.html">SingIn&SignUp</a></li>
-        </ul>
-    </div>
 
-    <div class="videotag">
-      <video autoplay loop muted>
-        <source src="../src/1226.mp4" type="video/mp4" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> TripTogether - Discover the World Together</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="navbar">
+    <a href="/" class="logo">🌍 TripTogether</a>
+    <ul class="nav-links">
+      <li><a href="/verify">DashBoard</a></li>
+      <li><a href="Aboutus.html">About Us</a></li>
+      <li><a href="signup.html">Join Now</a></li>
+    </ul>
+  </div>
+  <main>
+    <section class="hero">
+      <video autoplay muted loop class="hero-video">
+        <source src="src/newvideo.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
-      <div class="video-overlay"></div>
-      <div class="overlay-text">
-        <h1>Connect. Plan. Wander.</h1>
-        <p>Find your perfect travel companions and create unforgettable experiences!</p>
-        <button onclick="startExploring()">Start your journey</button>
+      <div class="container">
+        <div class="hero-content">
+          <h1>Connect. Plan. Wander.</h1>
+          <p>Find your perfect travel companions and create unforgettable experiences!</p>
+          <a href="signup.html" class="btn">Start Your Journey</a>
+        </div>
+      </div>
+    </section>
+    <section class="travel-experiences">
+      <h2>Find Your Perfect Travel Group</h2>
+      <div class="experiences-grid">
+        <div class="experience-card">
+          <img src="https://img.etimg.com/thumb/width-1200,height-1200,imgsize-104248,resizemode-75,msid-105870888/industry/services/travel/tour-companies-request-pmo-to-campaign-for-brand-india.jpg" alt="Adventure Travel">
+          <div class="experience-info">
+            <h3>Cultural Immersion</h3>
+            <p>Join a community to explore India's vibrant traditions, festivals, and local cuisines with fellow travelers.</p>
+            <a href="#" class="experience-link">Join Cultural Groups</a>
+          </div>
+        </div>
+        <div class="experience-card">
+          <img src="https://tripjive.com/wp-content/uploads/2024/02/eco-tourism.jpg" alt="Cultural Immersion">
+          <div class="experience-info">
+            <h3>Eco-Tourism</h3>
+            <p>Connect with like-minded travelers who share your passion for sustainable travel and protecting nature.</p>
+            <a href="#" class="experience-link">Go Green with a Group</a>
+          </div>
+        </div>
+        <div class="experience-card">
+          <img src="https://www.novo-monde.com/app/uploads/2018/03/DSC04958_01-1600x1140.jpg" alt="Eco-Tourism">
+          <div class="experience-info">
+            <h3>Backpacking & Budget Travel</h3>
+            <p>Find fellow budget travelers to explore new destinations without breaking the bank. Share tips, ideas, and experiences!</p>
+            <a href="#" class="experience-link">Join Budget Travel Groups</a>
+          </div>
+        </div>
+        <div class="experience-card">
+          <img src="https://res.cloudinary.com/worldpackers/image/upload/c_fill,f_auto,q_auto,w_1024/v1/guides/article_cover/ejgcq0acumqaosd7kl26" alt="Luxury Getaways">
+          <div class="experience-info">
+            <h3>Adventure Travel</h3>
+            <p>Looking for a thrill? Join an adventure group for treks, safaris, and more exciting experiences in India.</p>
+            <a href="#" class="experience-link">Join Adventure Groups</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <h2>What Our Travelers Say</h2>
+      <div class="testimonial-slider">
+        <div class="testimonial-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs7WTNfxOo9GecKS0hNyMJqFM3mlAHjgOq0g&s" alt="User 1" class="user-image">
+          <p class="testimonial-text">"TripTogether helped me find the perfect group for my first solo trip to Rajasthan. I connected with fellow travelers who shared tips, planned activities, and made the journey unforgettable."</p>
+          <p class="user-name">- Ananya S.</p>
+        </div>
+        <div class="testimonial-card">
+          <img src="https://i.pinimg.com/280x280_RS/2b/70/7f/2b707f7930de037b41a7dfd97ccff799.jpg" alt="User 2" class="user-image">
+          <p class="testimonial-text">"As someone new to trekking, TripTogether matched me with an experienced group for a Himalayan adventure. The support and guidance I received were invaluable."</p>
+          <p class="user-name">- Rohan M.</p>
+        </div>
+        <div class="testimonial-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDM9g4eY1cWvNc60Z1OVL--X8pufmOtItbYQ&s" alt="User 3" class="user-image">
+          <p class="testimonial-text">"I moved to Kerala and didn’t know where to start exploring. TripTogether introduced me to a wonderful travel community that helped me discover hidden gems and unique experiences."</p>
+          <p class="user-name">- Priya K.</p>
+        </div>
+        <div class="testimonial-card">
+          <img src="https://www.fabhotels.com/blog/wp-content/uploads/2022/08/600X400-WPD-min.jpg" alt="User 4" class="user-image">
+          <p class="testimonial-text">"TripTogether is the perfect platform for building meaningful travel connections. I joined a group for a Goa beach getaway and ended up making lifelong friends!"</p>
+          <p class="user-name">- Akash T.</p>
+        </div>
+      </div>
+    </section>    
+      <div class="slider-controls">
+        <button class="prev-btn">❮</button>
+        <button class="next-btn">❯</button>
+      </div>
+    </section>
+    </section>
+
+    <section class="community-spotlight">
+      <h2>Community Spotlight</h2>
+      <div class="spotlight-grid">
+        <div class="spotlight-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgbZEhJC67T0BI7yZyei_FuTBXk-dIIm1A4w&s" alt="Priya's Himalayan Trek" class="spotlight-image">
+          <div class="spotlight-content">
+            <div class="spotlight-header">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAvrEnhl6lByx7EO9tsXVkF7GZ_9VyhmtfMA&s" alt="Priya" class="spotlight-avatar">
+              <div class="spotlight-info">
+                <h3>Priya S.</h3>
+                <p>Solo traveler from Delhi, India</p>
+              </div>
+            </div>
+            <p class="spotlight-story">"TripTogether connected me with a group of amazing trekkers for my Himalayan journey. The shared experience of conquering tough trails turned into lifelong friendships!"</p>
+            <a href="#" class="spotlight-link">Read Priya's Story</a>
+          </div>
+        </div>
+        <div class="spotlight-card">
+          <img src="https://www.odtravels.in/playground/themes/images/sundarban-banner/sundarban-boat-tour.png" alt="Ravi and Anjali's Wildlife Adventure" class="spotlight-image">
+          <div class="spotlight-content">
+            <div class="spotlight-header">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxQOTSn4oOmzZvIBtmiD3Rmc4r9u07S8srbA&s" alt="Ravi and Anjali" class="spotlight-avatar">
+              <div class="spotlight-info">
+                <h3>Ravi & Anjali</h3>
+                <p>Travel duo from Bengaluru, India</p>
+              </div>
+            </div>
+            <p class="spotlight-story">"Our Sunderbans adventure was made unforgettable thanks to TripTogether. We connected with local experts who shared insights about the rich biodiversity of the region!"</p>
+            <a href="#" class="spotlight-link">Explore Their Journey</a>
+          </div>
+        </div>
+        <div class="spotlight-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKKPOVWIlSFS9DS2xsVH8GXapKKGVQZGsb5g&s" alt="Aman's Festival Connection" class="spotlight-image">
+          <div class="spotlight-content">
+            <div class="spotlight-header">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1uO62onYlBfWiTH0XzcrO_rsNpT0Nsm_mMw&s" alt="Aman" class="spotlight-avatar">
+              <div class="spotlight-info">
+                <h3>Aman K.</h3>
+                <p>Cultural explorer from Jaipur, India</p>
+              </div>
+            </div>
+            <p class="spotlight-story">"Through TripTogether, I joined a group to experience Durga Puja in Kolkata. Witnessing the festivities with locals gave me a deep appreciation for Indian culture and tradition."</p>
+            <a href="#" class="spotlight-link">Discover Aman's Experience</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <section class="newsletter">
+      <div class="newsletter-container">
+        <h2>Subscribe to Our Newsletter</h2>
+        <p>Stay updated with the latest travel tips, destination guides, and exclusive offers!</p>
+        <form class="newsletter-form" id="newsletter-form">
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit">Subscribe</button>
+        </form>
+        <div class="newsletter-message" id="newsletter-message"></div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <script>
+    // Testimonial Slider
+    const slider = document.querySelector('.testimonial-slider');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    let currentIndex = 0;
+
+    const updateSliderPosition = () => {
+      const slideWidth = slider.offsetWidth;
+      slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    };
+
+    nextBtn.addEventListener('click', () => {
+      const totalSlides = slider.children.length;
+      currentIndex = (currentIndex + 1) % totalSlides; // Wraps to the first slide after the last
+      updateSliderPosition();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      const totalSlides = slider.children.length;
+      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Wraps to the last slide before the first
+      updateSliderPosition();
+    });
+
+    // Initial call to set position
+    updateSliderPosition();
+
+    // Newsletter form submission
+    const newsletterForm = document.getElementById('newsletter-form');
+    const newsletterMessage = document.getElementById('newsletter-message');
+
+    newsletterForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const email = this.querySelector('input[type="email"]').value;
+
+      // Simulating form submission
+      setTimeout(() => {
+        newsletterMessage.textContent = `Thank you! ${email} has been subscribed to our newsletter.`;
+        this.reset();
+      }, 1000);
+    });
+
+  </script>
+</body>
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>About TripTogether</h3>
+      <p>Connecting travelers worldwide for unforgettable experiences and lasting friendships.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/verify">DashBoard</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <ul>
+        <li>Email: info@triptogether.com</li>
+        <li>Phone: +91 1234567890</li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Follow Us</h3>
+      <div class="social-icons">
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
       </div>
     </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 TripTogether. All rights reserved.</p>
+  </div>
+</footer>
 
-    <script>
-      let lastScrollTop = 0;
-      const navbar = document.querySelector(".navbar");
-      const logo = navbar.querySelector(".logo");
-
-      let isScrolling;
-
-      window.addEventListener("scroll", function () {
-        if (isScrolling) clearTimeout(isScrolling);
-
-        
-        isScrolling = setTimeout(() => {
-          let currentScroll =
-            window.pageYOffset || document.documentElement.scrollTop;
-
-          if (currentScroll > lastScrollTop) {
-            navbar.style.padding = "20px 40px";
-            logo.style.fontSize = "18px";
-          } else {
-            navbar.style.padding = "25px 35px";
-            logo.style.fontSize = "24px";
-          }
-
-          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
-        }, 50); 
-      });
-
-      function startExploring() {
-        alert("Let's start exploring!");
-      }
-    </script>
-  </body>
 </html>
