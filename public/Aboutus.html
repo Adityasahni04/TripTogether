@@ -9,13 +9,13 @@
 <body>
     <div class="navbar">
         <a href="/" class="logo">🌍 TripTogether</a>
+        <div class="menu-toggle" aria-label="Toggle navigation">&#9776;</div>
         <ul class="nav-links">
-          <li><a href="/verify">DashBoard</a></li>
+          <li><a href="/verify">Dashboard</a></li>
           <li><a href="Aboutus.html">About Us</a></li>
           <li><a href="signup.html">Join Now</a></li>
         </ul>
-    </div>
-
+      </div>  
     <div class="hero">
         <div class="hero-content">
             <h1>ABOUT US</h1>
@@ -160,20 +160,13 @@
       </footer>
 
       <script>
-        // Mobile Menu Toggle
+        
+document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.nav-links').classList.toggle('active');
+});
         const menuBtn = document.querySelector('.menu-btn');
         const navLinks = document.querySelector('.nav-links');
-    
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav') && !menuBtn.contains(e.target)) {
-                navLinks.classList.remove('active');
-            }
-        });
+
     
         // Add scroll padding for fixed header
         const nav = document.querySelector('nav');

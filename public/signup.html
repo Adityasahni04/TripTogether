@@ -38,7 +38,7 @@
         padding-right: 20px; /* Added padding to separate from the nav links */
         transition: font-size 0.5s ease;
         text-decoration: none; /* Removes underline */
-        color: inherit; 
+        color: inherit;
       }
 
       .nav-links {
@@ -198,7 +198,12 @@
       .toggle-form button:hover {
         text-decoration: underline;
       }
-
+      .menu-toggle {
+        display: none;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+      }
       #registerPasswordError {
         color: red;
         display: none;
@@ -214,13 +219,51 @@
           width: 100%;
         }
       }
+      @media screen and (max-width: 768px) {
+        .navbar {
+          flex-direction: column;
+          align-items: center;
+          padding: 20px;
+          text-align: center;
+        }
+
+        .menu-toggle {
+          display: block;
+          position: absolute;
+          top: 20px;
+          right: 20px;
+        }
+
+        .nav-links {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          margin-top: 20px;
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .nav-links li {
+          width: 100%;
+        }
+
+        .nav-links li a {
+          display: block;
+          padding: 10px 0;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="navbar">
       <a href="/" class="logo">🌍 TripTogether</a>
+      <div class="menu-toggle" aria-label="Toggle navigation">&#9776;</div>
       <ul class="nav-links">
-        <li><a href="/verify">DashBoard</a></li>
+        <li><a href="/verify">Dashboard</a></li>
         <li><a href="Aboutus.html">About Us</a></li>
         <li><a href="signup.html">Join Now</a></li>
       </ul>
@@ -336,31 +379,8 @@
     </div>
 
     <script>
-
-let lastScrollTop = 0;
-      const navbar = document.querySelector(".navbar");
-      const logo = navbar.querySelector(".logo");
-
-      let isScrolling;
-
-      window.addEventListener("scroll", function () {
-        if (isScrolling) clearTimeout(isScrolling);
-
-        
-        isScrolling = setTimeout(() => {
-          let currentScroll =
-            window.pageYOffset || document.documentElement.scrollTop;
-
-          if (currentScroll > lastScrollTop) {
-            navbar.style.padding = "20px 40px";
-            logo.style.fontSize = "18px";
-          } else {
-            navbar.style.padding = "25px 35px";
-            logo.style.fontSize = "24px";
-          }
-
-          lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; 
-        }, 50); 
+      document.querySelector(".menu-toggle").addEventListener("click", () => {
+        document.querySelector(".nav-links").classList.toggle("active");
       });
       function toggleForm() {
         const loginForm = document.getElementById("loginForm");
