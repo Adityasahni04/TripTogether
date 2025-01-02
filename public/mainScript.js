@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:9000";
+const API_BASE_URL = "http://localhost:80";
 const groupList = document.getElementById("group-list"); // Ensure this element exists in your HTML
 
 var modal = document.getElementById("myModal");

@@ -1,5 +1,5 @@
 const mongoose=require("mongoose");
-const url='mongodb://127.0.0.1:27017/GetSetGo';
+const url='mongodb+srv://asmigarg569:7dfqYLq35ii3SoSa@cluster0.4frfv.mongodb.net/';
 
 mongoose.connect(url);
 const data=mongoose.connection;

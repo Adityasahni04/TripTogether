@@ -368,7 +368,7 @@ app.get("/api/get-unread-messages/:groupId/:userId", async (req, res) => {
       res.status(500).json({ message: "Error marking messages as read." });
     }
   });    
-server.listen(9000, () => {
-    console.log(`Server is listening on port 9000`);
+server.listen(80, () => {
+    console.log(`Server is listening on port 80`);
 });
 
