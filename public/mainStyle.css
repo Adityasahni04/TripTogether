@@ -10,8 +10,12 @@
 body {
   display: flex;
   height: 100vh;
-  background-color: #f0f2f5;
+  background-color: whitesmoke;
   overflow: hidden;
+  background-image: url('https://i.pinimg.com/736x/fa/7d/fc/fa7dfc8bd8f5a2691f893ff8198eddde.jpg'); /* Replace with the actual path to your image */
+  background-size: 70%; /* Reduces the image size to 50% of its original size */
+  background-position: right center; /* Shifts the image to the right and centers it vertically */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
 }
 
 .sidebar {
@@ -32,7 +36,7 @@ body {
     align-items: center; /* Vertically align items */
     justify-content: space-between; /* Optional: Space out elements */
     padding: 10px; /* Add some padding */
-    background-color: #f0f2f5;
+    background-color:white;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Light background */
   }
   
@@ -45,18 +49,19 @@ body {
 
 .search-bar {
   padding: 15px;
-  background-color: #f0f2f5;
+  background-color:white;
 }
 
 .search-bar input {
   width: 100%;
   padding: 12px;
-  border: none;
-  border-radius: 25px;
-  background-color: white;
+  border: 2px solid #c7f2c4;  /* Darker shade of #f0fdf4 */
+  border-radius: 4px;  /* Optional: Rounded corners */
+  background-color: #f0fdf4;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
+
 
 .search-bar input:focus {
   outline: none;
@@ -73,7 +78,7 @@ body {
   padding: 15px;
   border-bottom: 1px solid #e9edef;
   cursor: pointer;
-  background-color: #f0f2f5;
+  background-color: white;
   transition: all 0.3s ease;
 }
 
@@ -83,7 +88,7 @@ body {
 }
 
 .group.active {
-  background-color: #25d366;
+  background-color:#f0fdf4;
   color: white;
 }
 
@@ -95,8 +100,8 @@ body {
 }
 
 .chat-header {
-  background-color: #f0f2f5;
-  padding: 15px;
+  background-color:#f5f2ff;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -133,7 +138,7 @@ body {
 
 .message-input button {
   padding: 12px 20px;
-  background-color: #25d366;
+  background-color: darkturquoise;
   color: white;
   border: none;
   border-radius: 25px;
@@ -142,7 +147,7 @@ body {
 }
 
 .message-input button:hover {
-  background-color: #128c7e;
+  background-color: darkblue;
   transform: scale(1.05);
 }
 
@@ -238,7 +243,7 @@ body {
 
   form button {
       padding: 10px;
-      background-color: #25d366;
+      background-color: darkturquoise;
       color: white;
       border: none;
       border-radius: 4px;
@@ -247,14 +252,14 @@ body {
   }
 
   form button:hover {
-      background-color: #128c7e;
+      background-color: darkblue;
   }
 
 .main-chat, .chat-header, .chat-messages, .message-input, .message-input input, .message-input button {
 display: none;
 }
 #createGroupBtn {
-    background-color: #007bff; /* Button background color */
+    background-color: darkturquoise; /* Button background color */
     color: #fff; /* Text color */
     font-size: 18px; /* Size of the "+" symbol */
     width: 40px; /* Button width */
@@ -280,7 +285,7 @@ display: none;
   margin-bottom: px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -340,9 +345,8 @@ display: none;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #ddd;
+  padding: 17px 23px;
+  background-color: lavender;
 }
 
 .chat-header h3 {
@@ -398,8 +402,7 @@ display: none;
   height: 600px; /* Fixed height for the container */
   max-height: 600px;
   width: 100%; /* Adjust based on your layout */
-  border: 1px solid #ccc;
-  border-radius: 10px;
+  background: linear-gradient(to bottom, #f5f2ff, #f0fdf4);
   padding: 10px;
   overflow-y: auto; /* Enable scrolling for overflow */
 }
@@ -415,15 +418,30 @@ display: none;
 
 .message.sent {
   align-self: flex-end;
-  background-color: #4CAF50;
-  color: white;
+  background-color:#f5f2ff;
+  color: black;
+  font-size: 14px;
+  padding: 10px 15px;
+  line-height: 1.5; /* Increases line spacing for text clarity */
+  word-wrap: break-word;
+  max-width: 75%
 }
 
 .message.received {
-  align-self: flex-start;
-  background-color: #e0e0e0;
-  color: black;
+  align-self: flex-start; /* Aligns message to the left */
+  background-color: white; /* White background */
+  color: #1e293b; /* Neutral black text */
+  border-radius: 10px; /* Rounded corners for a smooth look */
+  padding: 10px 15px; /* Adds spacing inside the message box */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  max-width: 75%; /* Restricts message width */
+  margin-bottom: 10px; /* Spacing between messages */
+  font-size: 14px; /* Adjusts font size for readability */
+  line-height: 1.5; /* Increases line spacing for text clarity */
+  word-wrap: break-word; /* Ensures long text wraps to the next line */
 }
+
+
 .unread-badge {
   background-color: #25D366; /* WhatsApp green color */
   color: white;
@@ -438,3 +456,26 @@ display: none;
   min-width: 1.4em; /* Small but noticeable width */
   height: 1.4em; /* Equal height to maintain circle shape */
 }
+.profile-photo {
+  width: 40px; /* Adjust the size */
+  height: 40px;
+  border-radius: 50%; /* To make it circular */
+  margin-right: 10px; /* Space between the photo and the name */
+  vertical-align: middle; /* Align it vertically with the text */
+}
+
+
+.chat-header h3 {
+  color: #1a396e; /* Blue color for text */
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.chat-header-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+

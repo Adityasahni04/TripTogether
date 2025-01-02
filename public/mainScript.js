@@ -82,19 +82,23 @@ async function loadGroups(searchQuery = "") {
 
         // Group content
         groupElement.innerHTML = `
-          <div class="group-content">
-            <div class="group-header">
-              <h3>${group.name}</h3>
-              ${
-                unreadCount > 0
-                  ? `<span class="unread-badge">${unreadCount}</span>`
-                  : ""
-              }
-            </div>
-            <p>${group.description}</p>
-            <p><strong>Location:</strong> ${group.location}</p>
+        <div class="group-content">
+          <div class="group-header">
+            <h3 style="color: #1a396e; margin: 0; font-size: 18px; font-weight: bold;">${group.name}</h3>
+            ${
+              unreadCount > 0
+                ? `<span class="unread-badge" style="background-color: #ff6347; color: #fff; padding: 2px 6px; border-radius: 12px; font-size: 12px;">${unreadCount}</span>`
+                : `<span class="time" style="font-size: 12px; color: #555;">10:30 AM</span>`
+            }
           </div>
-        `;
+          <p style="margin: 5px 0; font-size: 14px; color: #2b2b2b;">${group.description}</p>
+          <p style="margin: 5px 0; font-size: 14px; color: #2b2b2b;">
+            <strong><i class="fa fa-map-marker" style="font-size: 18px; color: #1a396e; margin-right: 5px;"></i></strong> 
+            ${group.location}
+          </p>
+        </div>
+      `;
+      
 
         // Add join button if the user isn't a member or admin
         if (!group.isMemberOrAdmin) {
