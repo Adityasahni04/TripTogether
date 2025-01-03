@@ -477,5 +477,33 @@ display: none;
   display: flex;
   gap: 15px;
 }
+@media screen and (max-width: 768px) {
+  body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling */
+  }
 
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+  }
 
+  .main-chat, .chat-header, .chat-messages, .message-input {
+    display: none;
+  }
+
+  .groups {
+    display: flex; /* Ensure groups is visible */
+    flex-grow: 1;
+    justify-content: center; /* Optional: Center content */
+    align-items: center; /* Optional: Center content */
+  }
+  .group-header.active + .group-list {
+    display: block; /* Ensure the group-list is displayed when active */
+  }
+}
