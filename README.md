@@ -2,7 +2,7 @@
 *A platform to connect travel enthusiasts, share experiences, and discover hidden gems in a single place.*
 
 ## **Overview**  
-People passionate about travel often struggle to find like-minded individuals or reliable local insights when visiting a new place. *TravelMate* solves this by enabling travelers to create groups, connect with others nearby, and exchange information about hidden gems—all within a single platform, eliminating the need to browse multiple websites.
+People passionate about travel often struggle to find like-minded individuals or reliable local insights when visiting a new place. *TripTogether* solves this by enabling travelers to create groups, connect with others nearby, and exchange information about hidden gems—all within a single platform, eliminating the need to browse multiple websites.
 
 ## **Features**  
 - **Group Creation**: Easily create or join travel groups based on interests or locations.  
