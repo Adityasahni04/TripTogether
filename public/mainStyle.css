@@ -479,21 +479,26 @@ display: none;
 }
 @media screen and (max-width: 768px) {
   body {
-    display: flex;
-    flex-direction: column;
     margin: 0;
     padding: 0;
     overflow: hidden; /* Prevent scrolling */
+    display: block; /* Ensure body is not flex or grid */
   }
 
   .sidebar {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     height: 100vh;
+    position: fixed; /* Prevent it from affecting the body layout */
+    top: 0;
+    left: 0;
+    background-color: #f4f4f4; /* Optional: Add a background */
+    z-index: 10; /* Ensure it stays above other elements */
   }
 
-  .main-chat, .chat-header, .chat-messages, .message-input {
+  .main-chat,
+  .chat-header,
+  .chat-messages,
+  .message-input {
     display: none;
   }
 
@@ -503,7 +508,119 @@ display: none;
     justify-content: center; /* Optional: Center content */
     align-items: center; /* Optional: Center content */
   }
+
+  .groups .create-group {
+    position: relative;
+    z-index: 11; /* Keep it above the sidebar */
+  }
+
+  .groups .search-input {
+    position: relative;
+    z-index: 11; /* Keep it above the sidebar */
+  }
+
   .group-header.active + .group-list {
     display: block; /* Ensure the group-list is displayed when active */
   }
+}
+@media screen and (max-width: 768px) {
+  body {
+    background-image: none;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+  }
+
+  .sidebar:hover {
+    width: 100%;
+  }
+
+  .main-chat {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    display: none;
+  }
+
+  .main-chat.active {
+    display: flex;
+  }
+
+  .chat-header, .chat-messages, .message-input {
+    display: block;
+  }
+
+  .chat-header {
+    padding: 10px;
+  }
+
+  .chat-messages {
+    height: calc(100vh - 120px);
+  }
+
+  .message-input {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .message-input input {
+    width: calc(100% - 70px);
+  }
+
+  .message-input button {
+    width: 60px;
+    padding: 12px 0;
+  }
+
+  .group {
+    padding: 10px;
+    z-index: 999; /* Ensure it stays below the modal */
+  }
+
+  .search-bar input {
+    font-size: 16px;
+  }
+
+  #createGroupBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1002;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: none;
+    margin: 10% auto;
+    padding: 15px;
+    z-index: 2000; /* Place the modal above all other elements */
+    position: relative; /* Ensure it positions correctly within the viewport */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999; /* Backdrop just below the modal */
+  }
+  .modal {
+    z-index: 1000000;
+}
 }
