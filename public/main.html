@@ -20,13 +20,13 @@
     </div>
     <div class="main-chat">
       <div class="chat-header">
+        <button class="back-button" onclick="goBack()">&#8592;</button> <!-- Back Button -->
         <h3>No</h3>
-        <div class="chat-header-buttons">
-        </div>
+        <div class="chat-header-buttons"></div>
       </div>
       <div class="chat-container">
         <div class="chat-messages"></div>
-      </div>
+      </div>  
       <div class="message-input">
         <input type="text" id="messageInput" placeholder="Type a message...">
         <button onclick="handleSendMessage()">Send</button>

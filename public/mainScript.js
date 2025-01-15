@@ -351,11 +351,9 @@ groupList.addEventListener("click", async (event) => {
 
       if (data.isMember) {
         console.log("User is part of the group");
-        toggleChatElementsForSmallScreens(true);
         toggleChatElements(true);
       } else {
         console.log("User is not part of the group");
-        toggleChatElementsForSmallScreens(false);
         toggleChatElements(false);
         
       }
@@ -475,46 +473,10 @@ function toggleChatElements(show) {
     }
   });
 }
+const backButton = document.querySelector('.back-button');
+backButton.addEventListener('click', function() {
+  toggleChatElements(false);
+  document.querySelector('.sidebar').style.display = 'block';
+});
 
-function toggleChatElementsForSmallScreens(show) {
-  const chatElements = document.querySelectorAll(
-    ".main-chat, .chat-header, .chat-messages, .message-input, .message-input input, .message-input button"
-  );
-  
-  const groupList = document.querySelector(".group-list");
-  const header=document.querySelector(".header")
-  const sidebar=document.querySelector(".sidebar")
-  
-  // Assuming `show` is a boolean variable that toggles between showing chat or group list
-  if (window.innerWidth < 768) {
-    if (show) {
-      // Show chat elements and hide group list
-      chatElements.forEach((el) => {
-        el.style.display = "block";
-        el.style.width = "100%";
-        el.style.height = "100%";
-        el.style.boxSizing = "border-box"; // Ensure padding doesn't break layout
-      });
-      const sendButton = document.querySelector(".message-input button");
-      if (sendButton) {
-        sendButton.style.padding = "8px 16px"; // Adjust padding to make it smaller
-        sendButton.style.fontSize = "14px"; // Reduce font size
-        sendButton.style.width = "auto"; // Ensure button is not too wide
-        sendButton.style.borderRadius = "5px"; // Keep it visually appealing
-      }
-      groupList.style.display = "none";
-      header.style.display="none";
-      sidebar.style.display="none";
-    } else {
-      // Hide chat elements and show group list
-      chatElements.forEach((el) => {
-        el.style.display = "none";
-      });
-  
-      groupList.style.display = "block";
-      groupList.style.overflowY = "auto";
-      groupList.style.maxHeight = "50vh";
-    }
-  }
-}  
 loadGroups();
