@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:9000";
+const API_BASE_URL = "http://localhost:80";//enter your ip address here
 const groupList = document.getElementById("group-list"); // Ensure this element exists in your HTML
 
 var modal = document.getElementById("myModal");
@@ -351,10 +351,13 @@ groupList.addEventListener("click", async (event) => {
 
       if (data.isMember) {
         console.log("User is part of the group");
-        toggleChatElements(true); // Show chat elements
+        toggleChatElementsForSmallScreens(true);
+        toggleChatElements(true);
       } else {
         console.log("User is not part of the group");
-        toggleChatElements(false); // Hide chat elements
+        toggleChatElementsForSmallScreens(false);
+        toggleChatElements(false);
+        
       }
 
       setActiveGroup(firstLine, isAdmin);
@@ -472,4 +475,46 @@ function toggleChatElements(show) {
     }
   });
 }
+
+function toggleChatElementsForSmallScreens(show) {
+  const chatElements = document.querySelectorAll(
+    ".main-chat, .chat-header, .chat-messages, .message-input, .message-input input, .message-input button"
+  );
+  
+  const groupList = document.querySelector(".group-list");
+  const header=document.querySelector(".header")
+  const sidebar=document.querySelector(".sidebar")
+  
+  // Assuming `show` is a boolean variable that toggles between showing chat or group list
+  if (window.innerWidth < 768) {
+    if (show) {
+      // Show chat elements and hide group list
+      chatElements.forEach((el) => {
+        el.style.display = "block";
+        el.style.width = "100%";
+        el.style.height = "100%";
+        el.style.boxSizing = "border-box"; // Ensure padding doesn't break layout
+      });
+      const sendButton = document.querySelector(".message-input button");
+      if (sendButton) {
+        sendButton.style.padding = "8px 16px"; // Adjust padding to make it smaller
+        sendButton.style.fontSize = "14px"; // Reduce font size
+        sendButton.style.width = "auto"; // Ensure button is not too wide
+        sendButton.style.borderRadius = "5px"; // Keep it visually appealing
+      }
+      groupList.style.display = "none";
+      header.style.display="none";
+      sidebar.style.display="none";
+    } else {
+      // Hide chat elements and show group list
+      chatElements.forEach((el) => {
+        el.style.display = "none";
+      });
+  
+      groupList.style.display = "block";
+      groupList.style.overflowY = "auto";
+      groupList.style.maxHeight = "50vh";
+    }
+  }
+}  
 loadGroups();
